@@ -4,6 +4,7 @@
 
 | 작업 | 문서 |
 |---|---|
+| 시작→인터뷰→합의→계획→구현→확인→제출 | [START-TO-FINISH](START-TO-FINISH.md) |
 | 설치·기본 실행·종료·재빌드·데이터 보존 | [QUICKSTART](QUICKSTART.md) |
 | 0.0.0.0·실제 포트·/fde·터미널 유지 | [PREVIEW](PREVIEW.md) |
 | 담당자 질문→요구→계획→구현·검증 | [WORKFLOW](WORKFLOW.md) |
