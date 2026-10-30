@@ -1,6 +1,6 @@
 {
   "id": "service-request",
-  "label": "업무 요청 실습",
+  "label": "업무 요청",
   "types": {
     "request": {
       "label": "요청",

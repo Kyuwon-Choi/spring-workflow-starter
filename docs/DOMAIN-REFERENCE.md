@@ -54,7 +54,7 @@ OWNER_ONLY는 “본인만 동작”이고 “본인 승인 금지”는 아니�
 | POST /{domain}/{type}/import | 1~100개 행을 생성, 한 행 실패 시 전체 롤백 |
 | GET /{domain}/{type}/export | q/state 필터와 권한을 적용한 CSV |
 
-생성 본문 예시(위 실습 정의를 등록한 뒤):
+생성 본문 예시(service-request 형식 예제를 등록한 뒤):
 
 ```json
 {"data":{"ticketNo":"REQ-001","title":"자료 검토 요청","estimatedCost":10000}}
