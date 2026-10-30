@@ -13,7 +13,7 @@
 | 문제 신호 | 먼저 꺼낼 것 | 가져올 범위 |
 |---|---|---|
 | 제공 저장소가 있음 | 제공 저장소 | 계약/테스트 우선, 아래 모듈만 필요한 만큼 참고 |
-| 객체·관계·처리·승인·업무 상태 | Spring FDE Workbench (A) | 공통 엔진+도메인 정의+계산 확장 |
+| 객체·관계·처리·승인·업무 상태 | Spring FDE Workbench (A) | 최소 앱+선택 모듈+업무 정의 |
 | 파일 정제·정답 계산·집계·리포트 | DuckDB recipe (A) | 입력 검증·SQL·JSON/CSV 출력 |
 | 배정·일정·자원·제약 최적화 | Timefold Spring quickstart (A) | planning model·constraints·solver API |
 | 표/관리 폼이 주된 개발 비용 | Refine / TanStack (B) | 선택 예제/컴포넌트, 서버 계약은 유지 |
@@ -31,7 +31,7 @@
 | 외부 API 장애/재시도 | Resilience4j (B) | 코어 decorator·멱등성 |
 | 스캔 이미지 OCR | Tesseract (B·설치 부담 높음) | 네이티브 OCR·언어 데이터 |
 
-CSV는 공통 키트에 Apache Commons CSV(A)를 연결했다. NocoBase(C)는 플랫폼 구조 참고로 보류했다.
+CSV를 선택하면 Apache Commons CSV(A)를 연결한다. NocoBase(C)는 플랫폼 구조 참고로 보류했다.
 
 새 레포를 선택하기 전 기존 베이스보다 절약할 시간과 설치/통합 비용을 비교한다. 두 인증 체계를 합치지 않고, 외부 예제의 공개 API 주소에 과제 파일/데이터를 보내지 않는다. task 파일·결과물은 외부로 push하지 않는다.
 
@@ -39,15 +39,17 @@ CSV는 공통 키트에 Apache Commons CSV(A)를 연결했다. NocoBase(C)는 �
 
 ### 1. 업무 객체·관계·승인·처리 도구
 
-- **선택:** 주력 베이스 — [jhipster/jhipster-sample-app-react](https://github.com/jhipster/jhipster-sample-app-react)
+- **선택:** 선택형 업무 모듈 — [jhipster/jhipster-sample-app-react](https://github.com/jhipster/jhipster-sample-app-react)
 - **고정:** `88535990553312f138136313c1a8df254c55cb31` · 라이선스 `Apache-2.0` ([원문](https://github.com/jhipster/jhipster-sample-app-react/blob/88535990553312f138136313c1a8df254c55cb31/LICENSE.txt))
 - **진입점:** [README.md](https://github.com/jhipster/jhipster-sample-app-react/tree/88535990553312f138136313c1a8df254c55cb31/README.md)
-- **재사용:** 이 키트의 공통 엔진/API/화면 + resources/fde/domains 정의. 원본에서는 인증·Spring/React 연결·저장소·빌드를 재사용.
+- **재사용:** 최소 생성기로 새 결과물 폴더를 만들고 auth/workflow/csv/enterprise/계산 확장 중 필요한 코드만 재사용. 기존 JHipster 앱은 참고 원본으로 보존.
 - **문제 공개 후 변경:** 실제 객체·필드·관계·역할/범위·동작을 정의하고 계산을 FdeExtension으로 추가.
-- **환경:** Java 21+, Maven wrapper, 전용 Node 24.21.0, H2. 최초 다운로드 네트워크.
-- **시작 경로:** ./npmw ci --no-audit --no-fund → ./npmw run webapp:build:dev → ./scripts/dev.sh
-- **검증:** 로컬 A: 백엔드 241개/프론트 191개 통과. 세 도메인 JWT 흐름, 조직 확장 HTTP 59요청·브라우저 다단계 승인·재시작 보존 확인. 제공 환경에서의 호환성은 별도 확인 대상.
+- **환경:** 생성 Python 3.10+, 앱 Java 21/Bash, Maven wrapper·Node 24.21.0. H2는 workflow 선택 때만 포함.
+- **시작 경로:** python3 scripts/create-solution.py ../solution --modules workflow --domain-file 업무정의.json → 생성 폴더의 scripts/build.sh와 scripts/preview.sh
+- **검증:** 2026-10-31 모듈형 6구성 빌드·HTTP 185요청·추가/재시작 7요청·로컬 화면 입력 확인. 기존 전체 참고 앱의 241/191개 검사는 별도 과거 범위. 제공 환경은 별도.
 - **선택하지 않거나 조심할 상황:** 기존 과제 저장소를 통째로 교체하지 않는다. 이미지/OCR/최적화 문제만 있을 때 전체 앱을 먼저 세우지 않는다.
+
+[새 폴더에 최소 생성·모듈 추가](MODULAR-STARTER.md). 위 고정 커밋은 JHipster 원본 출처이며 이 저장소의 추가 모듈 검증과 구분한다.
 
 ### 2. CSV·표의 정제·집계·검증·리포트
 

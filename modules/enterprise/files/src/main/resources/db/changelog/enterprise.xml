@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+ <changeSet id="20261028010000" author="fde-kit">
+  <createTable tableName="fde_tenant"><column name="id" type="varchar(64)"><constraints primaryKey="true" nullable="false"/></column></createTable>
+  <createTable tableName="fde_member">
+   <column name="login" type="varchar(50)"><constraints primaryKey="true" nullable="false"/></column>
+   <column name="tenant" type="varchar(64)"><constraints nullable="false"/></column>
+   <column name="department" type="varchar(64)"><constraints nullable="false"/></column>
+   <column name="roles" type="varchar(200)"><constraints nullable="false"/></column>
+   <column name="projects" type="varchar(4000)"><constraints nullable="false"/></column>
+   <column name="active" type="boolean"><constraints nullable="false"/></column>
+   <column name="version" type="bigint" defaultValueNumeric="0"><constraints nullable="false"/></column>
+  </createTable>
+  <createTable tableName="fde_project">
+   <column name="id" type="bigint" autoIncrement="true"><constraints primaryKey="true" nullable="false"/></column>
+   <column name="tenant" type="varchar(64)"><constraints nullable="false"/></column>
+   <column name="code" type="varchar(64)"><constraints nullable="false"/></column>
+   <column name="department" type="varchar(64)"><constraints nullable="false"/></column>
+   <column name="budget_limit" type="bigint"><constraints nullable="false"/></column>
+   <column name="spent" type="bigint" defaultValueNumeric="0"><constraints nullable="false"/></column>
+  </createTable>
+  <addUniqueConstraint tableName="fde_project" columnNames="tenant,code" constraintName="ux_fde_project"/>
+  <createTable tableName="fde_rule">
+   <column name="id" type="bigint" autoIncrement="true"><constraints primaryKey="true" nullable="false"/></column>
+   <column name="tenant" type="varchar(64)"><constraints nullable="false"/></column>
+   <column name="rule_key" type="varchar(64)"><constraints nullable="false"/></column>
+   <column name="effective_at" type="timestamp"><constraints nullable="false"/></column>
+   <column name="finance_above" type="bigint"/>
+  </createTable>
+  <addUniqueConstraint tableName="fde_rule" columnNames="tenant,rule_key" constraintName="ux_fde_rule"/>
+  <addUniqueConstraint tableName="fde_rule" columnNames="tenant,effective_at" constraintName="ux_fde_rule_time"/>
+  <createTable tableName="fde_delegation">
+   <column name="id" type="bigint" autoIncrement="true"><constraints primaryKey="true" nullable="false"/></column>
+   <column name="tenant" type="varchar(64)"><constraints nullable="false"/></column>
+   <column name="grantor" type="varchar(50)"><constraints nullable="false"/></column>
+   <column name="delegate_login" type="varchar(50)"><constraints nullable="false"/></column>
+   <column name="project" type="varchar(64)"><constraints nullable="false"/></column>
+   <column name="valid_from" type="timestamp"><constraints nullable="false"/></column>
+   <column name="valid_until" type="timestamp"><constraints nullable="false"/></column>
+   <column name="revoked_at" type="timestamp"/>
+  </createTable>
+  <createIndex tableName="fde_delegation" indexName="ix_fde_delegate"><column name="tenant"/><column name="delegate_login"/></createIndex>
+  <createTable tableName="fde_config_audit">
+   <column name="id" type="bigint" autoIncrement="true"><constraints primaryKey="true" nullable="false"/></column>
+   <column name="tenant" type="varchar(64)"><constraints nullable="false"/></column>
+   <column name="actor" type="varchar(50)"><constraints nullable="false"/></column>
+   <column name="action" type="varchar(64)"><constraints nullable="false"/></column>
+   <column name="before_data" type="clob"/><column name="after_data" type="clob"><constraints nullable="false"/></column>
+   <column name="occurred_at" type="timestamp"><constraints nullable="false"/></column>
+  </createTable>
+ </changeSet>
+</databaseChangeLog>

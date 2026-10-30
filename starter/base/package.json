@@ -1,0 +1,16 @@
+{
+  "name": "fde-solution",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc --noEmit && vite build",
+    "dev": "vite --host 0.0.0.0"
+  },
+  "dependencies": {"react": "19.3.0", "react-dom": "19.3.0"},
+  "devDependencies": {
+    "@types/node": "22.20.2", "@types/react": "19.3.0", "@types/react-dom": "19.3.0",
+    "@vitejs/plugin-react": "6.1.1", "typescript": "6.0.3", "vite": "8.3.0"
+  },
+  "engines": {"node": ">=24.21.0"}
+}

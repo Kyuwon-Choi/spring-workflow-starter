@@ -1,0 +1,88 @@
+{
+  "id": "inventory",
+  "label": "재고 관리",
+  "types": {
+    "item": {
+      "label": "재고 품목",
+      "labelField": "name",
+      "keyField": "sku",
+      "fields": {
+        "sku": {
+          "label": "SKU",
+          "type": "string",
+          "required": true,
+          "maxLength": 60
+        },
+        "name": {
+          "label": "품목명",
+          "type": "string",
+          "required": true,
+          "maxLength": 100
+        },
+        "quantity": {
+          "label": "수량",
+          "type": "integer",
+          "required": true,
+          "min": 0,
+          "max": 1000000
+        },
+        "category": {
+          "label": "분류",
+          "type": "enum",
+          "required": true,
+          "options": [
+            "RAW",
+            "FINISHED"
+          ]
+        },
+        "tracked": {
+          "label": "추적 여부",
+          "type": "boolean",
+          "required": false
+        }
+      },
+      "states": [
+        "ACTIVE"
+      ],
+      "initialState": "ACTIVE",
+      "readRoles": [
+        "ROLE_USER",
+        "ROLE_ADMIN"
+      ],
+      "readScope": "ALL",
+      "managerRoles": [
+        "ROLE_ADMIN"
+      ],
+      "createRoles": [
+        "ROLE_USER",
+        "ROLE_ADMIN"
+      ],
+      "actions": {
+        "adjust": {
+          "label": "수량 조정",
+          "from": [
+            "ACTIVE"
+          ],
+          "target": "ACTIVE",
+          "roles": [
+            "ROLE_USER",
+            "ROLE_ADMIN"
+          ],
+          "scope": "ALL",
+          "inputs": {
+            "delta": {
+              "label": "증감 수량",
+              "type": "integer",
+              "required": true,
+              "min": -1000000,
+              "max": 1000000
+            }
+          },
+          "writes": {},
+          "requires": [],
+          "extension": "stock-adjustment"
+        }
+      }
+    }
+  }
+}

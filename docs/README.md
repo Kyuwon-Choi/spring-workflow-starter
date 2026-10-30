@@ -4,6 +4,8 @@
 
 | 작업 | 문서 |
 |---|---|
+| 새 폴더에 최소 앱 생성·선택 모듈 추가 | [MODULAR-STARTER](MODULAR-STARTER.md) |
+| 환경 준비·선택별 설치 의존성 | [DEPENDENCIES](DEPENDENCIES.md) |
 | 시작→인터뷰→합의→계획→구현→확인→제출 | [START-TO-FINISH](START-TO-FINISH.md) |
 | 설치·기본 실행·종료·재빌드·데이터 보존 | [QUICKSTART](QUICKSTART.md) |
 | 0.0.0.0·실제 포트·/fde·터미널 유지 | [PREVIEW](PREVIEW.md) |

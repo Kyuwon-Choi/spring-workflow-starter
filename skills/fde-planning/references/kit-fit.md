@@ -1,5 +1,7 @@
 # 키트를 고르는 경계
 
+모듈형 생성기가 제공되면 기본은 Spring·React·health만이다. auth(메모리 계정/JWT Bearer), workflow(인증+JPA/H2/Liquibase+업무 엔진), csv, enterprise, stock-adjustment 중 필요한 것만 선택한다. 업무 정의도 명시한 한 개만 가져온다. 기존 전체 참고 앱의 회원가입·관리/장비/은행 계좌 예제는 생성 앱에 포함하지 않는다. 생성기와 실제 모듈 폴더를 확인하고 코드/설치/기동을 재검증한다.
+
 현재 프로젝트의 실제 문서·코드와 다시 대조한다. 아래는 Spring FDE Workbench 준비 버전의 확인 범위이며 모든 FDE 제품의 공통 사양이 아니다.
 
 | 요구 | 시작점 | 반드시 확인할 차이 |

@@ -39,7 +39,7 @@ skill을 쓰는 환경에서는 먼저 [설치·첫 호출](../skills/README.md)
 
 ## 3. 계획과 기반 선택
 
-기존 코드가 있으면 그것을 먼저 실행한다. 신규 업무 상태 관리이면 이 키트를, 파일 정답/집계이면 [분석 recipe](../recipes/analytics/README.md)를, 배정/문서/AI 등이 핵심이면 [레포 카드](REPO-CATALOG.md)를 비교한다.
+기존 코드가 있으면 그것을 먼저 실행한다. 신규 업무 상태 관리이면 [최소 생성기](MODULAR-STARTER.md)로 필요한 모듈만 가져오고, 파일 정답/집계이면 [분석 recipe](../recipes/analytics/README.md)를, 배정/문서/AI 등이 핵심이면 [레포 카드](REPO-CATALOG.md)를 비교한다.
 
 ```text
 확정 요구와 완료 조건: [ID/출처/기대값]

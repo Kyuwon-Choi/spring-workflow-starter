@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "modules": {
+    "auth": {
+      "label": "JWT 로그인·시스템 역할",
+      "requires": [],
+      "maven": [
+        "org.springframework.boot:spring-boot-starter-security",
+        "org.springframework.boot:spring-boot-starter-oauth2-resource-server"
+      ],
+      "npm": {
+        "axios": "1.20.0"
+      },
+      "properties": [
+        "app.auth.users[0].login=admin",
+        "app.auth.users[0].password=${APP_ADMIN_PASSWORD:admin}",
+        "app.auth.users[0].authorities[0]=ROLE_USER",
+        "app.auth.users[0].authorities[1]=ROLE_ADMIN",
+        "app.auth.users[1].login=user",
+        "app.auth.users[1].password=${APP_USER_PASSWORD:user}",
+        "app.auth.users[1].authorities[0]=ROLE_USER"
+      ]
+    },
+    "workflow": {
+      "label": "객체·관계·상태·권한·이력",
+      "requires": [
+        "auth"
+      ],
+      "maven": [
+        "org.springframework.boot:spring-boot-starter-data-jpa",
+        "org.springframework.boot:spring-boot-starter-liquibase",
+        "com.h2database:h2"
+      ],
+      "npm": {
+        "bootstrap": "5.3.8"
+      },
+      "properties": [
+        "spring.datasource.url=jdbc:h2:file:./.local-data/solution;DB_CLOSE_ON_EXIT=FALSE",
+        "spring.datasource.username=sa",
+        "spring.datasource.password=",
+        "spring.jpa.hibernate.ddl-auto=validate",
+        "spring.jpa.open-in-view=false",
+        "spring.jpa.properties.hibernate.jdbc.time_zone=UTC",
+        "spring.liquibase.change-log=classpath:db/changelog/master.xml"
+      ]
+    },
+    "csv": {
+      "label": "CSV 미리보기·원자적 입력·출력",
+      "requires": [
+        "workflow"
+      ],
+      "maven": [
+        "org.apache.commons:commons-csv:1.14.1"
+      ],
+      "npm": {},
+      "properties": []
+    },
+    "enterprise": {
+      "label": "회사·부서·프로젝트·위임·다단계 승인·예산",
+      "requires": [
+        "workflow"
+      ],
+      "maven": [],
+      "npm": {},
+      "properties": []
+    },
+    "stock-adjustment": {
+      "label": "수량 증감 계산 확장",
+      "requires": [
+        "workflow"
+      ],
+      "maven": [],
+      "npm": {},
+      "properties": []
+    }
+  }
+}

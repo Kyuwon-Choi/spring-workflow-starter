@@ -1,0 +1,146 @@
+{
+  "id": "support",
+  "label": "고객 문의",
+  "types": {
+    "customer": {
+      "label": "고객",
+      "labelField": "name",
+      "keyField": "code",
+      "fields": {
+        "code": {
+          "label": "고객 코드",
+          "type": "string",
+          "required": true,
+          "maxLength": 40
+        },
+        "name": {
+          "label": "고객명",
+          "type": "string",
+          "required": true,
+          "maxLength": 100
+        },
+        "email": {
+          "label": "이메일",
+          "type": "string",
+          "required": false,
+          "maxLength": 160
+        }
+      },
+      "states": [
+        "ACTIVE"
+      ],
+      "initialState": "ACTIVE",
+      "readRoles": [
+        "ROLE_USER",
+        "ROLE_ADMIN"
+      ],
+      "readScope": "ALL",
+      "managerRoles": [
+        "ROLE_ADMIN"
+      ],
+      "createRoles": [
+        "ROLE_USER",
+        "ROLE_ADMIN"
+      ],
+      "actions": {}
+    },
+    "ticket": {
+      "label": "문의",
+      "labelField": "title",
+      "keyField": null,
+      "fields": {
+        "title": {
+          "label": "문의 제목",
+          "type": "string",
+          "required": true,
+          "maxLength": 160
+        },
+        "customer": {
+          "label": "고객",
+          "type": "reference",
+          "required": true,
+          "reference": "customer"
+        },
+        "priority": {
+          "label": "우선순위",
+          "type": "enum",
+          "required": true,
+          "options": [
+            "LOW",
+            "NORMAL",
+            "HIGH"
+          ]
+        },
+        "response": {
+          "label": "답변",
+          "type": "string",
+          "required": false,
+          "maxLength": 2000
+        }
+      },
+      "states": [
+        "OPEN",
+        "ANSWERED",
+        "CLOSED"
+      ],
+      "initialState": "OPEN",
+      "readRoles": [
+        "ROLE_USER",
+        "ROLE_ADMIN"
+      ],
+      "readScope": "OWN",
+      "managerRoles": [
+        "ROLE_ADMIN"
+      ],
+      "createRoles": [
+        "ROLE_USER",
+        "ROLE_ADMIN"
+      ],
+      "actions": {
+        "reply": {
+          "label": "답변하기",
+          "from": [
+            "OPEN"
+          ],
+          "target": "ANSWERED",
+          "roles": [
+            "ROLE_USER",
+            "ROLE_ADMIN"
+          ],
+          "scope": "OWN",
+          "inputs": {
+            "response": {
+              "label": "답변",
+              "type": "string",
+              "required": true,
+              "maxLength": 2000
+            }
+          },
+          "writes": {
+            "response": "response"
+          },
+          "requires": [],
+          "extension": null
+        },
+        "close": {
+          "label": "종료하기",
+          "from": [
+            "ANSWERED"
+          ],
+          "target": "CLOSED",
+          "roles": [
+            "ROLE_USER",
+            "ROLE_ADMIN"
+          ],
+          "scope": "OWN",
+          "inputs": {},
+          "writes": {},
+          "requires": [
+            "response"
+          ],
+          "extension": null
+        }
+      }
+    }
+  }
+}

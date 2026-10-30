@@ -1,49 +1,64 @@
-# FDE Workbench · Spring Boot + React
+# 모듈형 FDE 키트 · Spring Boot + React
 
-업무 객체·관계·상태·동작을 정의하고 필요한 계산·권한 정책을 연결하는 Spring Boot + React 키트다. 입력 검증, 목록/검색, 생성/동작, CSV, 충돌 처리와 변경 이력을 공통 엔진으로 처리한다.
+이 저장소는 참고 원본이다. 참고 원본은 제출 대상 밖의 허용된 경로에 두고, 결과물만 실제 제출 경로에 배치한다. 실제 과제 앱은 **새 폴더에 최소 구성으로 생성하고 필요한 모듈만 추가**한다. 기본 앱에는 Spring·React·상태 확인 API만 있다. 선택하지 않은 로그인·DB·업무 화면·예제 데이터는 결과물에 복사하지 않는다.
 
-```bash
-git clone --branch codex/public-starter https://github.com/Kyuwon-Choi/spring-workflow-starter.git
-cd spring-workflow-starter
-```
+## 최소 앱으로 시작
 
-## 실행과 미리보기
-
-Java 21+, OpenSSL, 의존성 다운로드 네트워크가 필요하다. Maven/Node/npm은 wrapper로 준비한다. 기본 실행에 Docker·별도 DB·AI API 키는 필요 없다.
+Python 3.10+는 생성 도구에, JDK 21과 Bash는 앱 빌드/실행에 필요하다. Maven·Node/npm은 wrapper가 준비한다.
 
 ```bash
-./npmw ci --no-audit --no-fund
-./npmw run webapp:build:dev
-./mvnw -ntp -Dskip.installnodenpm -Dskip.npm verify
+git clone --depth 1 --branch codex/public-starter https://github.com/Kyuwon-Choi/spring-workflow-starter.git /tmp/fde-reference-kit
+python3 /tmp/fde-reference-kit/scripts/create-solution.py solution
+cd solution
+./scripts/build.sh
 ./scripts/preview.sh 8080
 ```
 
-제공 환경의 PORT에는 **서버 로그의 실제 포트**, URL 경로에는 **`/fde`**를 입력하고 연결한다. 위 실행기는 0.0.0.0에 바인딩한다. 화면을 사용하는 동안 서버 터미널을 유지한다. [미리보기 상세](docs/PREVIEW.md).
+미리보기에는 서버 로그의 실제 포트와 `/`를 입력한다. 서버는 0.0.0.0에 바인딩하며 터미널을 유지한다. 기본 생성 원본은 24개 파일이며 설치/빌드 산출물은 제외한 수치다. [전체 생성·추가 방법](docs/MODULAR-STARTER.md) · [설치 의존성](docs/DEPENDENCIES.md).
 
-로컬 확인 계정은 `user/user`, `admin/admin`이다. DB·생성된 서명 키는 Git에서 제외한 `.local-data/`에 저장된다. 루프백 실행·조직 데모·재빌드는 [QUICKSTART](docs/QUICKSTART.md)를 따른다.
+## 요구에 따라 선택
 
-## 과제에 적용
+| 모듈 | 필요한 경우 |
+|---|---|
+| auth | 로그인·시스템 역할·서버 인증 |
+| workflow | 업무 객체·참조·상태 동작·권한·이력·파일 DB |
+| csv | CSV 검증/일괄 입력·내보내기 |
+| enterprise | 회사·부서·프로젝트·위임·조건부 결재·공유 예산 |
+| stock-adjustment | 수량 증감 계산 확장 |
 
-[시작부터 제출까지 순서와 복사할 프롬프트](docs/START-TO-FINISH.md)를 따라 진행한다.
+상위 폴더로 돌아와 실제 요구에 맞춘 신뢰된 업무 정의를 연결한다.
 
-1. 제공 코드·자료와 실제 담당자 답을 읽고 요구/완료 조건을 기록한다. 기존 프로젝트가 있으면 그 구조와 계약을 우선한다.
-2. [질문·합의·계획 절차](docs/WORKFLOW.md)로 기반과 첫 실행 흐름을 정한다. [skill 설치·호출](skills/README.md)에 따라 `./scripts/install-skills.sh [과제 폴더]`로 두 skill을 준비하고, [WORK 템플릿](docs/templates/WORK.md)에 합의·현재 단계·검증을 기록한다.
-3. `src/main/resources/fde/domains/*.json`에 객체·필드·관계·상태·동작을 정의한다. 계산은 FdeExtension, 조직/조회/출력 권한은 FdePolicy로 확장한다.
-4. 입력→실제 결과를 먼저 연결하고 관련 정상/경계/권한/실패 검사를 수행한다.
-5. 분석·문서·배정·AI 기능이 핵심이면 [문제 유형별 레포 카드](docs/REPO-CATALOG.md)에서 필요한 기반/모듈을 고른다.
+```bash
+cd ..
+python3 /tmp/fde-reference-kit/scripts/create-solution.py solution --add --modules workflow --domain-file ./task-domain.json
+# CSV가 필요할 때만:
+python3 /tmp/fde-reference-kit/scripts/create-solution.py solution --add --modules csv
+```
+
+workflow는 auth를, csv/enterprise는 workflow와 auth를 포함한다. 선택한 정의와 관련 모듈만 복사하고 다른 예제 페이지는 넣지 않는다. 모듈 추가 후 생성 앱을 다시 빌드한다. 이미 수정한 공통 파일과 충돌하면 전체 쓰기를 중단한다. 강제 덮어쓰기나 자동 모듈 제거는 제공하지 않는다.
+
+신규 생성 앱의 인증은 선택형 JWT Bearer·메모리 설정 계정이다. 기존 전체 참고 앱의 회원가입/관리 화면은 가져오지 않는다. 과제가 기존 프로젝트를 주면 그 스택·API·인증을 유지한다. 참고 원본과 결과물의 실제 제출 범위는 플랫폼 안내를 따른다.
+
+## 질문부터 제출까지
+
+[시작부터 제출까지](docs/START-TO-FINISH.md) · [질문·합의·계획 skill](skills/README.md) · [WORK 양식](docs/templates/WORK.md).
+
+제공 자료와 실제 담당자 답을 요구/완료 조건으로 연결하고, 첫 실제 입력→결과를 만든 뒤 중간 확인·관련 정상/경계/권한/실패 검사를 수행한다. 재사용·직접 구현 범위와 실제 검증·한계를 남긴다.
 
 | 필요한 내용 | 문서 |
 |---|---|
-| 전체 사용 순서 | [문서 목차](docs/README.md) |
-| 문제에 맞는 도구 빠르게 선택 | [선택 기준](docs/REPO-CHOOSER.md) · [20개 카드](docs/REPO-CATALOG.md) |
-| 새 업무 매핑·수정 위치 | [업무 적용](docs/ADAPTATION.md) |
-| JSON·API·CSV 계약 | [계약/API](docs/DOMAIN-REFERENCE.md) |
-| 회사·부서·프로젝트·위임·다단계 승인·예산 | [조직 정책](docs/ENTERPRISE-GUIDE.md) |
-| 진행 중 규칙 변경·기존 데이터 | [요구 변경](docs/CHANGE-CONTROL.md) |
-| 보안·권한·예외 검사 | [보안](docs/SECURITY.md) |
-| 실행 오류·409·DB 잠금 | [오류 해결](docs/TROUBLESHOOTING.md) |
-| 검증 명령과 확인 범위 | [검증](docs/VALIDATION.md) |
+| 최소 생성·모듈 추가·기존 코드 보호 | [MODULAR-STARTER](docs/MODULAR-STARTER.md) |
+| 직접 준비/자동 설치/선택 의존성 | [DEPENDENCIES](docs/DEPENDENCIES.md) |
+| 전체 사용 문서 | [목차](docs/README.md) |
+| JSON·API·CSV 계약 | [DOMAIN-REFERENCE](docs/DOMAIN-REFERENCE.md) |
+| 추가 요구·기존 데이터·규칙 적용 시점 | [CHANGE-CONTROL](docs/CHANGE-CONTROL.md) |
+| 특수 분석/문서/배정 등 도구 선택 | [선택 기준](docs/REPO-CHOOSER.md) · [20개 카드](docs/REPO-CATALOG.md) |
+| 실제 검사와 미검증 범위 | [VALIDATION](docs/VALIDATION.md) |
 
-사전 작성 코드/자료 사용은 해당 평가 규칙이 허용하는 범위에서 한다. 실제 과제 데이터·결과물을 외부에 전송하지 않는다. [제공 환경 적용](docs/ASSESSMENT.md).
+## 기존 전체 참고 앱
+
+루트의 기존 JHipster 앱과 전체 기능 소스/테스트는 비교·재사용용으로 보존했다. 그 앱의 실행은 [기존 QUICKSTART](docs/QUICKSTART.md), 확장 원리는 [FDE-GUIDE](docs/FDE-GUIDE.md)를 본다. 신규 과제 결과물에 이 저장소 전체를 복사하지 않는다.
+
+공개 자료·사전 코드 사용은 해당 평가 규칙의 범위에서 한다. 실제 과제 데이터/코드/결과물을 외부로 전송하지 않는다. [제공 환경 안내](docs/ASSESSMENT.md).
 
 [원본·고정 커밋](UPSTREAM.json) · [변경 고지](NOTICE-KIT.md) · [Apache-2.0](LICENSE.txt) · [원본 README](UPSTREAM-README.md)
