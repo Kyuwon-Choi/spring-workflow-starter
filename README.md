@@ -33,6 +33,7 @@ Java 21+, OpenSSL, 의존성 다운로드 네트워크가 필요하다. Maven/No
 | 필요한 내용 | 문서 |
 |---|---|
 | 전체 사용 순서 | [문서 목차](docs/README.md) |
+| 문제에 맞는 도구 빠르게 선택 | [선택 기준](docs/REPO-CHOOSER.md) · [20개 카드](docs/REPO-CATALOG.md) |
 | 새 업무 매핑·수정 위치 | [업무 적용](docs/ADAPTATION.md) |
 | JSON·API·CSV 계약 | [계약/API](docs/DOMAIN-REFERENCE.md) |
 | 회사·부서·프로젝트·위임·다단계 승인·예산 | [조직 정책](docs/ENTERPRISE-GUIDE.md) |

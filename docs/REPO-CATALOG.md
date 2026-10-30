@@ -1,10 +1,12 @@
 # 문제 유형별 GitHub 선택 카드
 
-기준: 2026-10-28 KST. 링크 수를 늘리는 대신 선택 상황·구체적 진입점·고정 커밋·라이선스·수정 지점·제약·검증 상태를 기록한다. 개인 코드 사용 허용과 평가 런타임은 별도 확인 대상이다. 공개 저장소 접근 가능과 즉시 실행 가능을 구분한다.
+기존 12개 카드 기준 2026-10-28, 추가 8개 기준 2026-10-30 KST. 링크 수를 늘리는 대신 선택 상황·구체적 진입점·고정 커밋·라이선스·수정 지점·제약·검증 상태를 기록한다. 개인 코드 사용 허용과 평가 런타임은 별도 확인 대상이다. 공개 저장소 접근 가능과 즉시 실행 가능을 구분한다.
 
 - **A:** 적힌 범위에서 로컬 실행/테스트 검증. 시험 환경·사용자 숙련·모든 기능을 보증하지 않음.
 - **B:** 관련 소스/예제·출처 확인. 후보를 찾는 시간을 줄이지만 런타임 설치·기동은 아직 검증하지 않음.
 - **C:** 라이선스·운영 비용 등 때문에 보류/구조 참고.
+
+새 도구를 고를 때는 [문제별 빠른 판단](REPO-CHOOSER.md)을 먼저 본다. A는 적힌 최소 실행 범위이며 애플리케이션 통합 완료를 뜻하지 않는다.
 
 ## 먼저 선택
 
@@ -20,6 +22,14 @@
 | 관계/공정/의존성 시각화 | React Flow (B) | nodes/edges UI |
 | 실제 모델/RAG 기능 요구 | Spring AI (B) | 허용된 모델 연결/출력 검증 모듈 |
 | Python 특수 라이브러리 중심 웹앱 | FastAPI template (B) | 환경 호환 확인 뒤 베이스 선택 |
+| Excel 다중 시트·수식·파일 결과 | Apache POI (독립 A) | Java 파일 모듈 |
+| PDF 페이지별 원문/근거 | PDFBox (독립 A) | PDF 전용 추출 |
+| 이름/품번의 유사 매칭 | RapidFuzz (독립 A) | 후보/점수·모호함 처리 |
+| 경로·선후관계·순환 | NetworkX (독립 A) | 그래프 계산 |
+| KPI/추이/분포 차트 | ECharts (B) | 기존 화면에 차트 컴포넌트 |
+| 중첩 JSON/AI 출력 형식 | networknt JSON Schema (B) | Jackson 호환 검증 모듈 |
+| 외부 API 장애/재시도 | Resilience4j (B) | 코어 decorator·멱등성 |
+| 스캔 이미지 OCR | Tesseract (B·설치 부담 높음) | 네이티브 OCR·언어 데이터 |
 
 CSV는 공통 키트에 Apache Commons CSV(A)를 연결했다. NocoBase(C)는 플랫폼 구조 참고로 보류했다.
 
@@ -170,6 +180,102 @@ CSV는 공통 키트에 Apache Commons CSV(A)를 연결했다. NocoBase(C)는 �
 - **시작 경로:** README Quick Start와 LICENSE.txt부터 확인. 이번 주력 실행 경로로 지정하지 않음.
 - **검증:** 소스 C: 공개 소스·커스텀 라이선스 확인만. 단순 Apache-2.0 오픈소스로 표기하지 않음.
 - **선택하지 않거나 조심할 상황:** 공개 저장소라는 사실만으로 모든 에디션/사용/재배포가 자유롭다고 판단하지 않음. 시험 직전 새 플랫폼 학습 경로로 전환하지 않음.
+
+### 13. Excel 다중 시트·수식·파일 입출력
+
+- **선택:** Java 파일 처리 모듈 — [apache/poi](https://github.com/apache/poi)
+- **고정:** `17de566ac64dee14bc1c132b9b4972b9a21165b3` · 라이선스 `Apache-2.0` ([원문](https://github.com/apache/poi/blob/17de566ac64dee14bc1c132b9b4972b9a21165b3/legal/LICENSE))
+- **진입점:** [poi-ooxml/src/main/java/org/apache/poi/xssf/usermodel/XSSFWorkbook.java](https://github.com/apache/poi/blob/17de566ac64dee14bc1c132b9b4972b9a21165b3/poi-ooxml/src/main/java/org/apache/poi/xssf/usermodel/XSSFWorkbook.java), [공식 사용 예](https://poi.apache.org/components/spreadsheet/quick-guide.html)
+- **재사용:** XSSFWorkbook/WorkbookFactory, DataFormatter와 FormulaEvaluator. XLSX 읽기/쓰기와 시트·열 매핑.
+- **문제 공개 후 변경:** 실제 시트/헤더/날짜/빈 셀/수식·캐시 값·중복 기준. 대용량이면 SAX/SXSSF 경로를 별도 선택.
+- **환경/비용:** 독립 실행 확인: Java 21 + org.apache.poi:poi-ooxml:6.0.0. DB/외부 API 불필요. Java 의존성 추가.
+- **시작 경로:** poi-ooxml:6.0.0 의존성 → WorkbookFactory.create(input) → 시트/셀 검증·변환 → 요구 파일 출력. 라이브러리 자체를 소스 빌드할 필요 없음.
+- **검증:** 독립 실행 A: XLSX 저장/재개방, 2개 시트, 수식 결과 300000, 한글 셀 확인. Spring 통합·실제 제공 파일·암호 파일·대용량은 미검증.
+- **선택하지 않거나 조심할 상황:** CSV만 필요하면 기존 DuckDB/Commons CSV를 사용. 모든 수식/서식/차트의 Excel 동등 지원을 가정하지 않음. ZIP/메모리·파일 크기 제한 유지.
+
+### 14. PDF 페이지별 텍스트·근거 추출
+
+- **선택:** Java PDF 전용 모듈 — [apache/pdfbox](https://github.com/apache/pdfbox)
+- **고정:** `739c1b9627afd843451bb67c2af749183038f5ff` · 라이선스 `Apache-2.0` ([원문](https://github.com/apache/pdfbox/blob/739c1b9627afd843451bb67c2af749183038f5ff/LICENSE.txt))
+- **진입점:** [pdfbox/src/main/java/org/apache/pdfbox/text/PDFTextStripper.java](https://github.com/apache/pdfbox/blob/739c1b9627afd843451bb67c2af749183038f5ff/pdfbox/src/main/java/org/apache/pdfbox/text/PDFTextStripper.java), [공식 사용 예](https://pdfbox.apache.org/3.0/migration.html)
+- **재사용:** PDFBox 3 Loader.loadPDF와 PDFTextStripper의 페이지 범위. 추출 텍스트와 원본 페이지 번호 보존.
+- **문제 공개 후 변경:** 페이지/문단 근거·읽기 순서·암호화·읽기 실패·텍스트 없음 정책. 표 구조 복원은 별도.
+- **환경/비용:** 독립 실행 확인: Java 21 + org.apache.pdfbox:pdfbox:3.0.8. Java 의존성 추가.
+- **시작 경로:** pdfbox:3.0.8 → Loader.loadPDF(file) → PDFTextStripper.setStartPage/setEndPage → 원문과 페이지 함께 반환.
+- **검증:** 독립 실행 A: 2페이지 PDF, 페이지별 텍스트 분리, 잘못된 PDF 거부 확인. OCR·한글 PDF 글꼴/인코딩·표/스캔 문서는 미검증.
+- **선택하지 않거나 조심할 상황:** Tika는 여러 형식 추출, PDFBox는 PDF 페이지 제어가 필요할 때 선택. 스캔 PDF에서 텍스트가 없으면 OCR이 필요하며 빈 추출을 정답으로 처리하지 않음.
+
+### 15. 설비명·품목명 유사 매칭과 중복 후보
+
+- **선택:** Python 매칭 모듈 — [rapidfuzz/RapidFuzz](https://github.com/rapidfuzz/RapidFuzz)
+- **고정:** `09328422916b13181238660cd3b23a71905d1ec9` · 라이선스 `MIT` ([원문](https://github.com/rapidfuzz/RapidFuzz/blob/09328422916b13181238660cd3b23a71905d1ec9/LICENSE))
+- **진입점:** [README.md](https://github.com/rapidfuzz/RapidFuzz/blob/09328422916b13181238660cd3b23a71905d1ec9/README.md), [공식 사용 예](https://github.com/rapidfuzz/RapidFuzz#usage)
+- **재사용:** process.extract/extractOne, fuzz.WRatio와 명시적 processor. 후보 점수·원본 키·검토 상태 보존.
+- **문제 공개 후 변경:** 정규화·블로킹 키·임계값·동점·자동 확정/수동 검토 기준을 담당자에게 확인.
+- **환경/비용:** 독립 실행 확인: Python 3.13 + RapidFuzz==3.14.6. PyPI 요구 Python>=3.11. 소스 빌드는 C++17이 필요할 수 있으므로 wheel 확인. Python wheel 설치.
+- **시작 경로:** pip install RapidFuzz==3.14.6 → process.extract(..., processor=utils.default_process, score_cutoff=기준).
+- **검증:** 독립 실행 A: 정규화 후 일치·동점 후보 보존·기준 미달 결과 없음 확인. 실제 업무 식별 정확도나 자동 병합 허용은 미검증.
+- **선택하지 않거나 조심할 상황:** 유사도 점수를 동일 개체 확정으로 간주하지 않음. 3.x는 기본 정규화를 자동 수행하지 않음. 동점/유사 품번은 원본을 보존해 검토.
+
+### 16. 최단 경로·선후관계·순환·연결성 계산
+
+- **선택:** Python 그래프 계산 모듈 — [networkx/networkx](https://github.com/networkx/networkx)
+- **고정:** `8ff5a974cd03813a676c7fa5fdf4e9b6ee710a7f` · 라이선스 `BSD-3-Clause` ([원문](https://github.com/networkx/networkx/blob/8ff5a974cd03813a676c7fa5fdf4e9b6ee710a7f/LICENSE.txt))
+- **진입점:** [README.rst](https://github.com/networkx/networkx/blob/8ff5a974cd03813a676c7fa5fdf4e9b6ee710a7f/README.rst), [공식 사용 예](https://networkx.org/documentation/stable/reference/algorithms/shortest_paths.html)
+- **재사용:** DiGraph, shortest_path, topological_sort, is_directed_acyclic_graph. 그래프 결과를 API/파일로 반환.
+- **문제 공개 후 변경:** 노드/방향/가중치/도달 불가/순환·동률 기준. 입력 규모와 음수 비용 여부 확인.
+- **환경/비용:** 독립 실행 확인: Python 3.13 + networkx==3.7. PyPI 요구 Python>=3.12, 3.14.1 제외. Python 패키지 설치.
+- **시작 경로:** pip install networkx==3.7 → 실제 edges로 DiGraph 작성 → 요구 알고리즘 → 원본 노드 ID로 결과 반환.
+- **검증:** 독립 실행 A: 양의 가중치 최단 경로/길이, 경로 없음, 위상 순서, 순환 감지 확인. 큰 그래프 성능·음수 비용은 미검증.
+- **선택하지 않거나 조심할 상황:** React Flow는 표시 도구, NetworkX는 계산 도구. 최단 경로를 차량/일정 전체 제약 최적화와 동일시하지 않음.
+
+### 17. KPI·추이·분포·공정 대시보드 차트
+
+- **선택:** JavaScript 시각화 모듈 — [apache/echarts](https://github.com/apache/echarts)
+- **고정:** `34f4d927eafe251f26f63afd3aeefa30f2feba30` · 라이선스 `Apache-2.0` ([원문](https://github.com/apache/echarts/blob/34f4d927eafe251f26f63afd3aeefa30f2feba30/LICENSE))
+- **진입점:** [README.md](https://github.com/apache/echarts/blob/34f4d927eafe251f26f63afd3aeefa30f2feba30/README.md), [공식 사용 예](https://echarts.apache.org/handbook/en/how-to/chart-types/bar/basic-bar/)
+- **재사용:** echarts.init, setOption, resize/dispose와 bar/line 등 공식 option 예제. 기존 React 컴포넌트에서 수명주기 연결.
+- **문제 공개 후 변경:** 정확한 집계/단위/기간/결측·필터 기준과 서버 데이터 범위. 차트 종류는 목적에 맞춰 선택.
+- **환경/비용:** 소스 확인 B: 순수 JavaScript 라이브러리. 실제 설치 버전·브라우저·React 통합은 미검증. 프론트 의존성·컴포넌트 연결.
+- **시작 경로:** 공식 Basic Bar option을 최소 컴포넌트에 연결 → 현재 API의 집계 응답으로 교체 → 실제 브라우저 표시/resize 확인.
+- **검증:** 소스 B: README·라이선스·공식 Basic Bar 예제 확인. 설치/화면 렌더링·React 통합은 미실행.
+- **선택하지 않거나 조심할 상황:** 차트가 집계 정답/권한 검사를 대신하지 않음. 이미 간단한 표로 요구를 충족하면 추가하지 않음.
+
+### 18. 중첩 JSON·외부 API·AI 출력의 구조 검증
+
+- **선택:** Java JSON Schema 검증 모듈 — [networknt/json-schema-validator](https://github.com/networknt/json-schema-validator)
+- **고정:** `53a6c00152459b035ae4fa2e26f3253bee52d71e` · 라이선스 `Apache-2.0` ([원문](https://github.com/networknt/json-schema-validator/blob/53a6c00152459b035ae4fa2e26f3253bee52d71e/LICENSE))
+- **진입점:** [README.md](https://github.com/networknt/json-schema-validator/blob/53a6c00152459b035ae4fa2e26f3253bee52d71e/README.md), [공식 사용 예](https://github.com/networknt/json-schema-validator#usage)
+- **재사용:** SchemaRegistry/스키마 검증, required/type/enum/additionalProperties 등. 승인된 스키마를 코드에서 관리.
+- **문제 공개 후 변경:** 허용 필드/중첩 구조/범위/오류 경로/format 적용 여부. 업무 의미·권한은 별도 서버 검사.
+- **환경/비용:** 소스 확인 B: 3.x는 Java17+/Jackson3, 2.x는 Java8+/Jackson2. Maven 배포 3.0.8 확인. 이 키트는 Jackson3이지만 실제 통합 미검증. Jackson 버전 호환 확인 필요.
+- **시작 경로:** Jackson 계열 확인 → com.networknt:json-schema-validator:3.0.8 후보 → 로컬 고정 schema로 정상/누락/잘못된 type 검사.
+- **검증:** 소스 B: README의 버전 분기·사용 예·라이선스와 Maven 배포 버전 확인. 라이브러리 실행/키트 통합은 미실행.
+- **선택하지 않거나 조심할 상황:** 스키마 통과가 업무 정답을 보장하지 않음. 사용자 제공 $ref/URI의 임의 원격 취득을 허용하지 말고 로컬 허용 스키마로 제한.
+
+### 19. 외부 API의 재시도·차단·동시 호출 제한
+
+- **선택:** Java 장애 처리 모듈 후보 — [resilience4j/resilience4j](https://github.com/resilience4j/resilience4j)
+- **고정:** `aa9aacb8cb5333f2dee2590ff07f05f2c942d602` · 라이선스 `Apache-2.0` ([원문](https://github.com/resilience4j/resilience4j/blob/aa9aacb8cb5333f2dee2590ff07f05f2c942d602/LICENSE.txt))
+- **진입점:** [resilience4j-retry/src/main/java/io/github/resilience4j/retry/Retry.java](https://github.com/resilience4j/resilience4j/blob/aa9aacb8cb5333f2dee2590ff07f05f2c942d602/resilience4j-retry/src/main/java/io/github/resilience4j/retry/Retry.java), [공식 사용 예](https://github.com/resilience4j/resilience4j)
+- **재사용:** Retry/CircuitBreaker/Bulkhead 코어 decorator 중 필요한 부분. 실제 HTTP 클라이언트 timeout과 조합.
+- **문제 공개 후 변경:** 재시도 가능한 오류·시도 횟수/간격·멱등성·제한·실패 표시·복구 기준.
+- **환경/비용:** 소스 확인 B: 조사 main 3.x는 Java21 요구. Maven 공개 retry 배포는 2.4.0으로 소스 계열과 구분. Boot4 starter 호환·통합은 미검증. 기존 클라이언트·멱등성·버전 확인 필요.
+- **시작 경로:** 먼저 HTTP connect/read timeout 설정 → 사용할 배포 버전의 코어 Retry API 확인 → 허용된 멱등 호출만 감쌈 → 실패/한도 확인.
+- **검증:** 소스 B: 코어 Retry 진입점·라이선스·공식 README 패턴/버전 차이 확인. 실제 네트워크 장애/키트 통합은 미실행.
+- **선택하지 않거나 조심할 상황:** 승인/결제 같은 비멱등 변경을 무조건 재시도하지 않음. 실패를 가짜 정상값으로 감추지 않음. Spring Boot3 starter를 Boot4에 그대로 추가하지 않음.
+
+### 20. 스캔 이미지·이미지 PDF의 OCR
+
+- **선택:** 조건부 네이티브 OCR 후보 — [tesseract-ocr/tesseract](https://github.com/tesseract-ocr/tesseract)
+- **고정:** `7e548e6eff172f38f97664afe7f7ce40db36c8d6` · 라이선스 `Apache-2.0` ([원문](https://github.com/tesseract-ocr/tesseract/blob/7e548e6eff172f38f97664afe7f7ce40db36c8d6/LICENSE))
+- **진입점:** [README.md](https://github.com/tesseract-ocr/tesseract/blob/7e548e6eff172f38f97664afe7f7ce40db36c8d6/README.md), [공식 사용 예](https://tesseract-ocr.github.io/tessdoc/Command-Line-Usage.html)
+- **재사용:** tesseract CLI와 필요한 언어 traineddata. PDF는 먼저 허용된 도구로 페이지 이미지화.
+- **문제 공개 후 변경:** 언어/해상도/회전·페이지 제한·처리시간·인식 실패/검토 기준. OCR 텍스트와 원본 근거 유지.
+- **환경/비용:** 소스 확인 B: 네이티브 실행 파일·Leptonica·언어 데이터 필요. kor+eng 사용 전 해당 traineddata 설치 여부 확인. 높음: 네이티브 실행기·언어 데이터.
+- **시작 경로:** tesseract --version 및 --list-langs 확인 → 설치돼 있을 때 tesseract input.png stdout -l kor+eng. PDF는 직접 입력하지 않음.
+- **검증:** 소스 B: README/CLI/라이선스·이미지 입력/언어 데이터 요구 확인. 네이티브 설치·한국어 OCR·실제 문서 인식은 미실행.
+- **선택하지 않거나 조심할 상황:** 텍스트 PDF는 PDFBox/Tika부터 확인. 실행 파일·언어 데이터가 없으면 단순 pip install로 해결됐다고 하지 않음. 문서를 임의 외부 OCR 서비스로 보내지 않음.
 
 ## 고정 소스 확인
 

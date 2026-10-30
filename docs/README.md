@@ -12,7 +12,7 @@
 | 회사·부서·프로젝트·위임·조건부 결재 | [ENTERPRISE-GUIDE](ENTERPRISE-GUIDE.md) |
 | 추가 요구·규칙 적용 시점·과거 데이터 | [CHANGE-CONTROL](CHANGE-CONTROL.md) |
 | 공통 엔진/정의/계산/정책 구조 | [FDE-GUIDE](FDE-GUIDE.md) |
-| 분석·문서·배정·AI 등의 출발점 | [REPO-CATALOG](REPO-CATALOG.md) |
+| 문제별 도구 선택 | [REPO-CHOOSER](REPO-CHOOSER.md) · [20개 카드](REPO-CATALOG.md) |
 | 권한·정보 노출·실패 원자성 | [SECURITY](SECURITY.md) |
 | 접속·로그인·정의·409·DB 오류 | [TROUBLESHOOTING](TROUBLESHOOTING.md) |
 | 테스트 명령·현재 검증 범위 | [VALIDATION](VALIDATION.md) |
