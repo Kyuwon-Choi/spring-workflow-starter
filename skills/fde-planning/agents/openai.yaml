@@ -1,0 +1,4 @@
+interface:
+  display_name: "FDE 구현 계획"
+  short_description: "확인된 요구를 완료 조건과 키트 선택 및 실행 검증으로 연결하기"
+  default_prompt: "$fde-planning 확인된 요구와 남은 시간으로 첫 흐름부터 검증·제출까지 계획해줘."

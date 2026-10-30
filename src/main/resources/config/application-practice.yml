@@ -1,0 +1,23 @@
+# Local rehearsal profile. The database and signing key stay outside the submission bundle.
+server:
+  address: 127.0.0.1
+spring:
+  datasource:
+    url: jdbc:h2:file:./.local-data/kit;DB_CLOSE_ON_EXIT=FALSE;MODE=MYSQL
+  h2:
+    console:
+      enabled: false
+  liquibase:
+    contexts: dev
+logging:
+  level:
+    ROOT: INFO
+    io.github.jhipster.sample: INFO
+    tech.jhipster: INFO
+    org.hibernate.SQL: WARN
+jhipster:
+  security:
+    authentication:
+      jwt:
+        token-validity-in-seconds: 1800
+        token-validity-in-seconds-for-remember-me: 1800

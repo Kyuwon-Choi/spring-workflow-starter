@@ -1,0 +1,117 @@
+{
+  "id": "service-request",
+  "label": "업무 요청 실습",
+  "types": {
+    "request": {
+      "label": "요청",
+      "labelField": "title",
+      "keyField": "ticketNo",
+      "fields": {
+        "ticketNo": {
+          "label": "요청번호",
+          "type": "string",
+          "required": true,
+          "maxLength": 40
+        },
+        "title": {
+          "label": "제목",
+          "type": "string",
+          "required": true,
+          "maxLength": 160
+        },
+        "estimatedCost": {
+          "label": "예상비용",
+          "type": "decimal",
+          "required": true,
+          "min": 0,
+          "max": 100000000
+        },
+        "decisionNote": {
+          "label": "반려 사유",
+          "type": "string",
+          "required": false,
+          "readOnly": true,
+          "maxLength": 500
+        }
+      },
+      "states": [
+        "DRAFT",
+        "PENDING",
+        "DONE",
+        "REJECTED"
+      ],
+      "initialState": "DRAFT",
+      "readRoles": [
+        "ROLE_USER",
+        "ROLE_ADMIN"
+      ],
+      "readScope": "OWN",
+      "managerRoles": [
+        "ROLE_ADMIN"
+      ],
+      "createRoles": [
+        "ROLE_USER",
+        "ROLE_ADMIN"
+      ],
+      "policy": null,
+      "actions": {
+        "submit": {
+          "label": "제출",
+          "from": [
+            "DRAFT",
+            "REJECTED"
+          ],
+          "target": "PENDING",
+          "roles": [
+            "ROLE_USER",
+            "ROLE_ADMIN"
+          ],
+          "scope": "OWNER_ONLY",
+          "inputs": {},
+          "writes": {},
+          "requires": [],
+          "extension": null
+        },
+        "complete": {
+          "label": "완료",
+          "from": [
+            "PENDING"
+          ],
+          "target": "DONE",
+          "roles": [
+            "ROLE_ADMIN"
+          ],
+          "scope": "ALL",
+          "inputs": {},
+          "writes": {},
+          "requires": [],
+          "extension": null
+        },
+        "reject": {
+          "label": "반려",
+          "from": [
+            "PENDING"
+          ],
+          "target": "REJECTED",
+          "roles": [
+            "ROLE_ADMIN"
+          ],
+          "scope": "ALL",
+          "inputs": {
+            "note": {
+              "label": "반려 사유",
+              "type": "string",
+              "required": true,
+              "maxLength": 500
+            }
+          },
+          "writes": {
+            "decisionNote": "note"
+          },
+          "requires": [],
+          "extension": null
+        }
+      }
+    }
+  }
+}

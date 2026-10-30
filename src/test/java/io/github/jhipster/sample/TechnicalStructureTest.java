@@ -22,13 +22,17 @@ class TechnicalStructureTest {
         .layer("Security").definedBy("..security..")
         .optionalLayer("Persistence").definedBy("..repository..")
         .layer("Domain").definedBy("..domain..")
+        .layer("Kit").definedBy("..kit..")
+        .layer("Fde").definedBy("..fde..")
 
         .whereLayer("Config").mayNotBeAccessedByAnyLayer()
         .whereLayer("Web").mayOnlyBeAccessedByLayers("Config")
         .whereLayer("Service").mayOnlyBeAccessedByLayers("Web", "Config")
-        .whereLayer("Security").mayOnlyBeAccessedByLayers("Config", "Service", "Web")
-        .whereLayer("Persistence").mayOnlyBeAccessedByLayers("Service", "Security", "Web", "Config")
-        .whereLayer("Domain").mayOnlyBeAccessedByLayers("Persistence", "Service", "Security", "Web", "Config")
+        .whereLayer("Security").mayOnlyBeAccessedByLayers("Config", "Service", "Web", "Kit", "Fde")
+        .whereLayer("Kit").mayOnlyBeAccessedByLayers("Config")
+        .whereLayer("Fde").mayOnlyBeAccessedByLayers("Config")
+        .whereLayer("Persistence").mayOnlyBeAccessedByLayers("Service", "Security", "Web", "Config", "Fde")
+        .whereLayer("Domain").mayOnlyBeAccessedByLayers("Persistence", "Service", "Security", "Web", "Config", "Fde")
 
         .ignoreDependency(belongToAnyOf(JhipsterSampleApplicationReactApp.class), alwaysTrue())
         .ignoreDependency(alwaysTrue(), belongToAnyOf(

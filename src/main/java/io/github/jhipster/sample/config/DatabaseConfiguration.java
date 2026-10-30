@@ -17,7 +17,7 @@ import tech.jhipster.config.JHipsterConstants;
 import tech.jhipster.config.h2.H2ConfigurationHelper;
 
 @Configuration
-@EnableJpaRepositories({ "io.github.jhipster.sample.repository" })
+@EnableJpaRepositories({ "io.github.jhipster.sample.repository", "io.github.jhipster.sample.kit", "io.github.jhipster.sample.fde" })
 @EnableJpaAuditing(auditorAwareRef = "springSecurityAuditorAware")
 @EnableTransactionManagement
 @EnableConfigurationProperties(H2ConsoleProperties.class)

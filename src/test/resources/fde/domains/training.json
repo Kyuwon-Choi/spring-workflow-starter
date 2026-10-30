@@ -1,0 +1,54 @@
+{
+  "id": "training",
+  "label": "교육비 지원 · 가상 과제",
+  "types": {
+    "course": {
+      "label": "교육",
+      "labelField": "name",
+      "keyField": "code",
+      "fields": {
+        "code": {"label": "교육 코드", "type": "string", "required": true, "maxLength": 40},
+        "name": {"label": "교육명", "type": "string", "required": true, "maxLength": 120},
+        "startDate": {"label": "시작일", "type": "date", "required": true}
+      },
+      "states": ["ACTIVE"], "initialState": "ACTIVE",
+      "readRoles": ["ROLE_USER", "ROLE_ADMIN"], "readScope": "ALL",
+      "managerRoles": ["ROLE_ADMIN"], "createRoles": ["ROLE_ADMIN"], "actions": {}
+    },
+    "application": {
+      "label": "교육비 신청",
+      "labelField": "title",
+      "keyField": null,
+      "fields": {
+        "title": {"label": "신청 제목", "type": "string", "required": true, "maxLength": 160},
+        "course": {"label": "교육", "type": "reference", "required": true, "reference": "course"},
+        "tuition": {"label": "교육비 (원)", "type": "integer", "required": true, "min": 1, "max": 1000000},
+        "attendanceRate": {"label": "확인 출석률 (%)", "type": "integer", "required": false, "min": 0, "max": 100, "readOnly": true},
+        "grant": {"label": "서버 계산 지원금 (원)", "type": "integer", "required": false, "min": 0, "max": 300000, "readOnly": true},
+        "reason": {"label": "반려 사유", "type": "string", "required": false, "maxLength": 500, "readOnly": true}
+      },
+      "states": ["DRAFT", "PENDING", "APPROVED", "REJECTED"], "initialState": "DRAFT",
+      "readRoles": ["ROLE_USER", "ROLE_ADMIN"], "readScope": "OWN",
+      "managerRoles": ["ROLE_ADMIN"], "createRoles": ["ROLE_USER", "ROLE_ADMIN"],
+      "actions": {
+        "submit": {
+          "label": "승인 요청", "from": ["DRAFT"], "target": "PENDING",
+          "roles": ["ROLE_USER", "ROLE_ADMIN"], "scope": "OWNER_ONLY",
+          "inputs": {}, "writes": {}, "requires": [], "extension": null
+        },
+        "approve": {
+          "label": "출석 확인 및 승인", "from": ["PENDING"], "target": "APPROVED",
+          "roles": ["ROLE_ADMIN"], "scope": "ALL",
+          "inputs": {"attendanceRate": {"label": "출석률 (%)", "type": "integer", "required": true, "min": 0, "max": 100}},
+          "writes": {}, "requires": ["tuition"], "extension": "training-grant"
+        },
+        "reject": {
+          "label": "반려", "from": ["PENDING"], "target": "REJECTED",
+          "roles": ["ROLE_ADMIN"], "scope": "ALL",
+          "inputs": {"reason": {"label": "반려 사유", "type": "string", "required": true, "maxLength": 500}},
+          "writes": {"reason": "reason"}, "requires": [], "extension": null
+        }
+      }
+    }
+  }
+}

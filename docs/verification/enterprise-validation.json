@@ -1,0 +1,175 @@
+{
+  "scope": "Local synthetic enterprise scenario; same-author fixed requirements, not independent blind evaluation",
+  "scenario": {
+    "requirements": 15,
+    "sha256": "7dd658695eab94b5b043fec4d3a7a40bc7c28efd4b7ac43b9b1821b794b4f704",
+    "unchanged": true
+  },
+  "backend": {
+    "total": 241,
+    "suites": {
+      "surefire": {
+        "tests": 123,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failsafe": {
+        "tests": 118,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    }
+  },
+  "frontend": {
+    "tests": 191,
+    "files": 23,
+    "failed": 0
+  },
+  "related_check": {
+    "backend": 75,
+    "frontend": 10,
+    "typecheck_lint_build": "passed; overlaps full counts"
+  },
+  "enterprise_scenario_tests": 16,
+  "http": {
+    "requests": 59,
+    "passed": true,
+    "concurrent_statuses": [
+      200,
+      409
+    ],
+    "shared_budget_spent": 70
+  },
+  "browser": {
+    "application_id": 7,
+    "policy": "UI-V3",
+    "checks": {
+      "configuration_rule_published": true,
+      "employee_created_and_submitted": true,
+      "server_assigned_company_department": true,
+      "policy_pinned_at_submission": true,
+      "employee_approval_actions_absent": true,
+      "department_approval_enters_finance_pending": true,
+      "department_actor_cannot_finish_finance": true,
+      "distinct_finance_actor_approves": true,
+      "terminal_actions_absent": true,
+      "four_stage_audit_visible": true
+    },
+    "evidence_note": "Synthetic local browser observed; screenshots retained outside public source"
+  },
+  "restart": {
+    "passed": true,
+    "budget_spent": 70,
+    "approved_state": "APPROVED",
+    "history_count": 4,
+    "trace": [
+      {
+        "method": "POST",
+        "path": "/api/authenticate",
+        "status": 200,
+        "expected": 200
+      },
+      {
+        "method": "POST",
+        "path": "/api/authenticate",
+        "status": 200,
+        "expected": 200
+      },
+      {
+        "method": "POST",
+        "path": "/api/authenticate",
+        "status": 200,
+        "expected": 200
+      },
+      {
+        "method": "POST",
+        "path": "/api/authenticate",
+        "status": 200,
+        "expected": 200
+      },
+      {
+        "method": "POST",
+        "path": "/api/authenticate",
+        "status": 200,
+        "expected": 200
+      },
+      {
+        "method": "POST",
+        "path": "/api/authenticate",
+        "status": 200,
+        "expected": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/fde/enterprise/request/objects/2",
+        "status": 200,
+        "expected": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/fde/enterprise/request/objects/2/history",
+        "status": 200,
+        "expected": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/fde-enterprise",
+        "status": 200,
+        "expected": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/fde/enterprise/request/objects/7",
+        "status": 200,
+        "expected": 200
+      }
+    ]
+  },
+  "legacy_migration": {
+    "old_object_id": 66,
+    "domain": "support",
+    "state": "CLOSED",
+    "data_survived_schema_upgrade": true
+  },
+  "requirements_mapping": "docs/verification/enterprise/REPORT.md",
+  "source_sha256": {
+    "src/main/java/io/github/jhipster/sample/fde/EnterpriseAccess.java": "e349136fe46515ddfc1f952188745ea3a212ea0ff1e21042a83a49e03438f81d",
+    "src/main/java/io/github/jhipster/sample/fde/EnterpriseAdministration.java": "9eebbea89f35535091d98ad1c74c5de5e09ad8fb7b1d7e1af4743ce282e7073b",
+    "src/main/java/io/github/jhipster/sample/fde/EnterpriseClock.java": "a70dad1b823cddff0383eb4b0eeba728c8c09ba2f86f1de69f13d1af97851c5e",
+    "src/main/java/io/github/jhipster/sample/fde/EnterpriseCommands.java": "b35c8068284330f35d552c5dcf1c573cefa84edfc42efb420af9f0c97f7c0ca3",
+    "src/main/java/io/github/jhipster/sample/fde/EnterpriseDemoData.java": "e1a98ce99f627c5b1f864425ea36c258b51504658a5049d7a50c37fbe661d4d9",
+    "src/main/java/io/github/jhipster/sample/fde/EnterpriseRecords.java": "135abe919c5a3e6aca466a9931b2311de7e58799a8ebdad5fd7e9de623ad1745",
+    "src/main/java/io/github/jhipster/sample/fde/EnterpriseResource.java": "0c750b1d77df0bb28d16defa706fef9ef9d31da1e0d27567e08a3b07854cc4d3",
+    "src/main/java/io/github/jhipster/sample/fde/EnterpriseStore.java": "9258ab11f7232bf521e06aa9b94c04ffa18361e4744f741ac2da70b40ce929fa",
+    "src/main/java/io/github/jhipster/sample/fde/FdeAudit.java": "7a9d82da77e247e394d6261461727bc6bdeca76c08833f0dc9006d194e173429",
+    "src/main/java/io/github/jhipster/sample/fde/FdeAuditRepository.java": "c213a25afa9411171dd36671dc201344c64b20284f8b57984e7c1141c271c554",
+    "src/main/java/io/github/jhipster/sample/fde/FdeErrors.java": "a636995a95d774dc2e3cf5bb4a25eeb97cc4f1f3d530c0640d410c5b5290bea0",
+    "src/main/java/io/github/jhipster/sample/fde/FdeExtension.java": "8abca7f0332bac30de9c210ec5a8bdcd5d95c24790c20baf910727195e4a1dd1",
+    "src/main/java/io/github/jhipster/sample/fde/FdeObject.java": "3d4cb3729c132e4666d82366be89168daaf8a3c5397bcc57529203349241d5eb",
+    "src/main/java/io/github/jhipster/sample/fde/FdeObjectRepository.java": "69ba52c0c62b6f3255eb00c4445ba72cb441e2b979e5e9f14c81c30094573a00",
+    "src/main/java/io/github/jhipster/sample/fde/FdePolicy.java": "e22c765628c9d28a9e883da287c547e23ea7ec07d81667c8b0001a1f3d27eb53",
+    "src/main/java/io/github/jhipster/sample/fde/FdeRegistry.java": "5c6a39b36de702cf80f7969ea22ed36cb5e78abfdec26b1c29bd3cea89fd82e8",
+    "src/main/java/io/github/jhipster/sample/fde/FdeResource.java": "ac1c424d8ae9ab0e6b1565243ca494d910596b2e41cc0bde87a9756b2165f8d6",
+    "src/main/java/io/github/jhipster/sample/fde/FdeSchema.java": "db4ae2e527e868e2cc15271885dd776e61cfbfd17facf24e5b965d09d7391a1a",
+    "src/main/java/io/github/jhipster/sample/fde/FdeService.java": "f641e2d7a9108cffc7eb59c1c89f0773eab8323fc12ef0a1c3a92cf7ef932363",
+    "src/main/java/io/github/jhipster/sample/fde/StockAdjustment.java": "529862113234b5ef1b390c2363176d6d7ca228d7ee13454c7f9b5b24ef436b5f"
+  },
+  "verified_limits": [
+    "One company per login",
+    "Flat department plus explicit project membership",
+    "Company-level write serialization",
+    "H2 local database",
+    "Internal notes excluded from all text search"
+  ],
+  "pending": [
+    "Official runtime/import permission",
+    "Cold install in provided exam environment",
+    "User blind rehearsal and time management",
+    "SSO/arbitrary organization tree/multiple company membership",
+    "Other database engines and production load/failure verification"
+  ],
+  "public_push": "not performed; publication preparation only",
+  "checked_date_kst": "2026-10-28"
+}

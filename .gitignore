@@ -151,3 +151,17 @@ Desktop.ini
 ######################
 coverage/
 .nyc_output/
+# Local rehearsal data and generated signing key
+.local-data/
+.frontend-install.log
+.backend-test.log
+.backend-run.log
+.frontend-build.log
+.frontend-lint.log
+.typecheck.log
+.verify.log
+# Local Python/reference workspaces
+.venv/
+__pycache__/
+/references/
+/recipes/analytics/result/

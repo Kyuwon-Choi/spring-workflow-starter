@@ -1,0 +1,197 @@
+{
+  "id": "tenant-key-test",
+  "label": "Test-only policy reuse",
+  "types": {
+    "request": {
+      "label": "업무 요청",
+      "labelField": "title",
+      "keyField": "title",
+      "policy": "enterprise",
+      "fields": {
+        "title": {
+          "label": "요청 제목",
+          "type": "string",
+          "required": true,
+          "maxLength": 160
+        },
+        "project": {
+          "label": "프로젝트 코드",
+          "type": "string",
+          "required": true,
+          "maxLength": 64
+        },
+        "amount": {
+          "label": "신청 금액 (원)",
+          "type": "integer",
+          "required": true,
+          "min": 1,
+          "max": 100000000
+        },
+        "tenant": {
+          "label": "회사",
+          "type": "string",
+          "required": false,
+          "readOnly": true,
+          "maxLength": 64
+        },
+        "department": {
+          "label": "소속 부서",
+          "type": "string",
+          "required": false,
+          "readOnly": true,
+          "maxLength": 64
+        },
+        "policyVersion": {
+          "label": "적용 승인 규칙",
+          "type": "string",
+          "required": false,
+          "readOnly": true,
+          "maxLength": 64
+        },
+        "submittedAt": {
+          "label": "제출 시각",
+          "type": "string",
+          "required": false,
+          "readOnly": true
+        },
+        "departmentApprover": {
+          "label": "부서 승인자",
+          "type": "string",
+          "required": false,
+          "readOnly": true
+        },
+        "finalApprover": {
+          "label": "최종 승인자",
+          "type": "string",
+          "required": false,
+          "readOnly": true
+        },
+        "internalNote": {
+          "label": "내부 검토 메모",
+          "type": "string",
+          "required": false,
+          "readOnly": true,
+          "maxLength": 1000
+        },
+        "reason": {
+          "label": "반려 사유",
+          "type": "string",
+          "required": false,
+          "readOnly": true,
+          "maxLength": 500
+        }
+      },
+      "states": [
+        "DRAFT",
+        "SUBMITTED",
+        "FINANCE_PENDING",
+        "APPROVED",
+        "REJECTED"
+      ],
+      "initialState": "DRAFT",
+      "readRoles": [
+        "ROLE_USER",
+        "ROLE_ADMIN"
+      ],
+      "readScope": "ALL",
+      "managerRoles": [],
+      "createRoles": [
+        "ROLE_USER",
+        "ROLE_ADMIN"
+      ],
+      "actions": {
+        "submit": {
+          "label": "본인 제출 / 재제출",
+          "from": [
+            "DRAFT",
+            "REJECTED"
+          ],
+          "target": "SUBMITTED",
+          "roles": [
+            "ROLE_USER",
+            "ROLE_ADMIN"
+          ],
+          "scope": "OWNER_ONLY",
+          "inputs": {},
+          "writes": {},
+          "requires": [],
+          "extension": "enterprise-submit"
+        },
+        "approve-department": {
+          "label": "부서 승인",
+          "from": [
+            "SUBMITTED"
+          ],
+          "target": "APPROVED",
+          "roles": [
+            "ROLE_USER",
+            "ROLE_ADMIN"
+          ],
+          "scope": "ALL",
+          "inputs": {
+            "note": {
+              "label": "내부 검토 메모",
+              "type": "string",
+              "required": false,
+              "maxLength": 1000
+            }
+          },
+          "writes": {
+            "internalNote": "note"
+          },
+          "requires": [
+            "policyVersion"
+          ],
+          "extension": "enterprise-department"
+        },
+        "approve-finance": {
+          "label": "재무 최종 승인",
+          "from": [
+            "FINANCE_PENDING"
+          ],
+          "target": "APPROVED",
+          "roles": [
+            "ROLE_USER",
+            "ROLE_ADMIN"
+          ],
+          "scope": "ALL",
+          "inputs": {},
+          "writes": {},
+          "requires": [
+            "policyVersion",
+            "departmentApprover"
+          ],
+          "extension": "enterprise-finance"
+        },
+        "reject": {
+          "label": "반려",
+          "from": [
+            "SUBMITTED",
+            "FINANCE_PENDING"
+          ],
+          "target": "REJECTED",
+          "roles": [
+            "ROLE_USER",
+            "ROLE_ADMIN"
+          ],
+          "scope": "ALL",
+          "inputs": {
+            "reason": {
+              "label": "반려 사유",
+              "type": "string",
+              "required": true,
+              "maxLength": 500
+            }
+          },
+          "writes": {
+            "reason": "reason"
+          },
+          "requires": [
+            "policyVersion"
+          ],
+          "extension": null
+        }
+      }
+    }
+  }
+}

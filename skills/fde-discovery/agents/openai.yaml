@@ -1,0 +1,4 @@
+interface:
+  display_name: "FDE 요구사항 인터뷰"
+  short_description: "현업 담당자의 답을 근거 있는 요구와 다음 질문으로 정리하기"
+  default_prompt: "$fde-discovery 과제 자료를 읽고 담당자에게 보낼 다음 질문과 요구 기록을 정리해줘."

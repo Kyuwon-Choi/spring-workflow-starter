@@ -1,0 +1,155 @@
+{
+  "id": "procurement",
+  "label": "구매 승인",
+  "types": {
+    "supplier": {
+      "label": "공급사",
+      "labelField": "name",
+      "keyField": "code",
+      "fields": {
+        "code": {
+          "label": "공급사 코드",
+          "type": "string",
+          "required": true,
+          "maxLength": 40
+        },
+        "name": {
+          "label": "공급사명",
+          "type": "string",
+          "required": true,
+          "maxLength": 100
+        }
+      },
+      "states": [
+        "ACTIVE"
+      ],
+      "initialState": "ACTIVE",
+      "readRoles": [
+        "ROLE_USER",
+        "ROLE_ADMIN"
+      ],
+      "readScope": "ALL",
+      "managerRoles": [
+        "ROLE_ADMIN"
+      ],
+      "createRoles": [
+        "ROLE_USER",
+        "ROLE_ADMIN"
+      ],
+      "actions": {}
+    },
+    "purchase": {
+      "label": "구매 요청",
+      "labelField": "title",
+      "keyField": null,
+      "fields": {
+        "title": {
+          "label": "구매 목적",
+          "type": "string",
+          "required": true,
+          "maxLength": 160
+        },
+        "supplier": {
+          "label": "공급사",
+          "type": "reference",
+          "required": true,
+          "reference": "supplier"
+        },
+        "amount": {
+          "label": "금액",
+          "type": "decimal",
+          "required": true,
+          "min": 1,
+          "max": 1000000000
+        },
+        "dueDate": {
+          "label": "희망일",
+          "type": "date",
+          "required": false
+        },
+        "reason": {
+          "label": "반려 사유",
+          "type": "string",
+          "required": false,
+          "maxLength": 500
+        }
+      },
+      "states": [
+        "DRAFT",
+        "PENDING",
+        "APPROVED",
+        "REJECTED"
+      ],
+      "initialState": "DRAFT",
+      "readRoles": [
+        "ROLE_USER",
+        "ROLE_ADMIN"
+      ],
+      "readScope": "OWN",
+      "managerRoles": [
+        "ROLE_ADMIN"
+      ],
+      "createRoles": [
+        "ROLE_USER",
+        "ROLE_ADMIN"
+      ],
+      "actions": {
+        "submit": {
+          "label": "승인 요청",
+          "from": [
+            "DRAFT"
+          ],
+          "target": "PENDING",
+          "roles": [
+            "ROLE_USER",
+            "ROLE_ADMIN"
+          ],
+          "scope": "OWN",
+          "inputs": {},
+          "writes": {},
+          "requires": [],
+          "extension": null
+        },
+        "approve": {
+          "label": "승인",
+          "from": [
+            "PENDING"
+          ],
+          "target": "APPROVED",
+          "roles": [
+            "ROLE_ADMIN"
+          ],
+          "scope": "ALL",
+          "inputs": {},
+          "writes": {},
+          "requires": [],
+          "extension": null
+        },
+        "reject": {
+          "label": "반려",
+          "from": [
+            "PENDING"
+          ],
+          "target": "REJECTED",
+          "roles": [
+            "ROLE_ADMIN"
+          ],
+          "scope": "ALL",
+          "inputs": {
+            "reason": {
+              "label": "반려 사유",
+              "type": "string",
+              "required": true,
+              "maxLength": 500
+            }
+          },
+          "writes": {
+            "reason": "reason"
+          },
+          "requires": [],
+          "extension": null
+        }
+      }
+    }
+  }
+}

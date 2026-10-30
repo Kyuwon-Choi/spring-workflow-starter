@@ -7,6 +7,9 @@ import PasswordResetFinish from 'app/modules/account/password-reset/finish/passw
 import PasswordResetInit from 'app/modules/account/password-reset/init/password-reset-init';
 import Register from 'app/modules/account/register/register';
 import Home from 'app/modules/home/home';
+import Workbench from 'app/modules/fde/workbench';
+import Organization from 'app/modules/fde/organization';
+import KitBoard from 'app/modules/kit/kit-board';
 import Login from 'app/modules/login/login';
 import Logout from 'app/modules/login/logout';
 import PrivateRoute from 'app/shared/auth/private-route';
@@ -24,8 +27,32 @@ const AppRoutes = () => {
       <Suspense fallback={loading}>
         <ErrorBoundaryRoutes>
           <Route index element={<Home />} />
+          <Route
+            path="fde"
+            element={
+              <PrivateRoute hasAnyAuthorities={[Authority.ADMIN, Authority.USER]}>
+                <Workbench />
+              </PrivateRoute>
+            }
+          />
           <Route path="login" element={<Login />} />
+          <Route
+            path="organization"
+            element={
+              <PrivateRoute hasAnyAuthorities={[Authority.ADMIN, Authority.USER]}>
+                <Organization />
+              </PrivateRoute>
+            }
+          />
           <Route path="logout" element={<Logout />} />
+          <Route
+            path="kit"
+            element={
+              <PrivateRoute hasAnyAuthorities={[Authority.ADMIN, Authority.USER]}>
+                <KitBoard />
+              </PrivateRoute>
+            }
+          />
           <Route path="account">
             <Route
               path="*"

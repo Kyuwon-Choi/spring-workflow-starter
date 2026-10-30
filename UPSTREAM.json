@@ -1,0 +1,6 @@
+{
+  "repository": "https://github.com/jhipster/jhipster-sample-app-react",
+  "commit": "88535990553312f138136313c1a8df254c55cb31",
+  "license": "Apache-2.0",
+  "adaptation": "Prewritten personal FDE workbench adaptation: shared object/action engine and UI, domain definitions and extension hooks. Created during development/assessment preparation; generic examples, no assessment solution. See NOTICE-KIT.md."
+}

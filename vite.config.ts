@@ -71,7 +71,7 @@ const config = defineConfig({
     'process.env.LOG_LEVEL': JSON.stringify(development ? 'info' : 'error'),
   },
   server: {
-    host: true,
+    host: '127.0.0.1',
     port: 9000,
     proxy: Object.fromEntries(
       ['/api', '/services', '/management', '/v3/api-docs', '/h2-console'].map(res => [

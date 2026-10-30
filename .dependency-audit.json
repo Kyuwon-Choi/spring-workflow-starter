@@ -1,0 +1,24 @@
+Using node installed locally v24.21.0
+Using npm installed locally 12.0.2
+{
+  "auditReportVersion": 2,
+  "vulnerabilities": {},
+  "metadata": {
+    "vulnerabilities": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 0,
+      "critical": 0,
+      "total": 0
+    },
+    "dependencies": {
+      "prod": 109,
+      "dev": 314,
+      "optional": 28,
+      "peer": 10,
+      "peerOptional": 0,
+      "total": 422
+    }
+  }
+}

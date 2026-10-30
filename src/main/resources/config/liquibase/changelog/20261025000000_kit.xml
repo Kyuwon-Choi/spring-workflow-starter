@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet id="20261025000000" author="prep-kit">
+        <createTable tableName="kit_asset">
+            <column name="id" type="bigint" autoIncrement="true" startWith="1000"><constraints primaryKey="true" nullable="false"/></column>
+            <column name="code" type="varchar(32)"><constraints nullable="false" unique="true" uniqueConstraintName="ux_kit_asset_code"/></column>
+            <column name="name" type="varchar(120)"><constraints nullable="false"/></column>
+        </createTable>
+        <createTable tableName="kit_request">
+            <column name="id" type="bigint" autoIncrement="true"><constraints primaryKey="true" nullable="false"/></column>
+            <column name="asset_id" type="bigint"><constraints nullable="false"/></column>
+            <column name="title" type="varchar(160)"><constraints nullable="false"/></column>
+            <column name="owner_login" type="varchar(50)"><constraints nullable="false"/></column>
+            <column name="state" type="varchar(20)"><constraints nullable="false"/></column>
+            <column name="version" type="bigint"><constraints nullable="false"/></column>
+            <column name="created_at" type="timestamp"><constraints nullable="false"/></column>
+        </createTable>
+        <createTable tableName="kit_audit_event">
+            <column name="id" type="bigint" autoIncrement="true"><constraints primaryKey="true" nullable="false"/></column>
+            <column name="request_id" type="bigint"><constraints nullable="false"/></column>
+            <column name="actor" type="varchar(50)"><constraints nullable="false"/></column>
+            <column name="action" type="varchar(24)"><constraints nullable="false"/></column>
+            <column name="from_state" type="varchar(20)"/>
+            <column name="to_state" type="varchar(20)"><constraints nullable="false"/></column>
+            <column name="occurred_at" type="timestamp"><constraints nullable="false"/></column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="kit_request" baseColumnNames="asset_id" referencedTableName="kit_asset" referencedColumnNames="id" constraintName="fk_kit_request_asset"/>
+        <addForeignKeyConstraint baseTableName="kit_audit_event" baseColumnNames="request_id" referencedTableName="kit_request" referencedColumnNames="id" constraintName="fk_kit_event_request"/>
+        <createIndex tableName="kit_request" indexName="ix_kit_request_owner"><column name="owner_login"/></createIndex>
+        <createIndex tableName="kit_audit_event" indexName="ix_kit_event_request"><column name="request_id"/></createIndex>
+    </changeSet>
+    <changeSet id="20261025000001" author="prep-kit" context="dev">
+        <insert tableName="kit_asset"><column name="id" valueNumeric="1"/><column name="code" value="EQ-01"/><column name="name" value="Inspection station"/></insert>
+        <insert tableName="kit_asset"><column name="id" valueNumeric="2"/><column name="code" value="EQ-02"/><column name="name" value="Packaging station"/></insert>
+    </changeSet>
+</databaseChangeLog>
