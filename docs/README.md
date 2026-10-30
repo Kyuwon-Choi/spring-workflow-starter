@@ -8,6 +8,7 @@
 
 | 필요한 내용 | 문서 |
 |---|---|
+| 제공 환경의 0.0.0.0 바인딩·포트·미리보기 | [미리보기 실행](PREVIEW.md) |
 | 객체·필드·관계·동작·API의 정확한 형식 | [계약/API](DOMAIN-REFERENCE.md) |
 | SQL 범위·조직·위임·다단계 승인·공유 예산 | [조직 업무](ENTERPRISE-GUIDE.md) |
 | 진행 중 규칙 변경·과거 건 처리·migration | [변경 대응](CHANGE-CONTROL.md) |

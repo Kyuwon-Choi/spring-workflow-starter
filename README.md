@@ -34,12 +34,15 @@ Java 21+, 네트워크, OpenSSL이 필요하다. Maven/Node는 wrapper로 준비
 
 <http://127.0.0.1:8082/organization>에서 구성하고 <http://127.0.0.1:8082/fde>에서 승인한다. 기본 앱과 DB·키를 분리한다. 역할별 계정과 확인 순서는 [조직 업무 가이드](docs/ENTERPRISE-GUIDE.md)를 따른다.
 
+제공 환경의 미리보기는 빌드 후 `./scripts/preview.sh 8080`으로 0.0.0.0에 바인딩한다. PORT에는 실제 서버 로그의 포트, 경로에는 `/fde`를 입력하고 실행 터미널을 유지한다. [미리보기 실행 절차](docs/PREVIEW.md)를 따른다.
+
 ## 사용 가이드
 
 | 지금 할 일 | 문서 |
 |---|---|
 | 전체 문서에서 필요한 것 찾기 | [문서 목차](docs/README.md) |
 | 설치·실행·종료·재빌드·데이터 보존 | [빠른 시작](docs/QUICKSTART.md) |
+| 제공 환경에서 0.0.0.0·실제 포트로 미리보기 | [미리보기 실행](docs/PREVIEW.md) |
 | 담당자 질문 → 요구 → 계획 → 구현 → 제출 | [작업 절차와 skill](docs/WORKFLOW.md) |
 | 새 업무를 직접 붙여보기 | [업무 적용 실습](docs/ADAPTATION.md) |
 | JSON 필드·권한·동작과 API 확인 | [계약/API 참고](docs/DOMAIN-REFERENCE.md) |

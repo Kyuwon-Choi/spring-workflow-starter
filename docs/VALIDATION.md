@@ -1,6 +1,6 @@
 # 실행 검증 기록
 
-2026-10-28 KST의 실제 로컬 소스 기준이다. 문서 정리/공개 포장은 이 실행 검증 뒤 수행했으며, 애플리케이션 소스·잠금 파일·테스트·실행기는 변경하지 않았다. 정리 단계에서 전체 테스트를 반복하지 않는다. [검증 요약](verification/enterprise-validation.json)과 [고정 시나리오](verification/enterprise/SCENARIO.md), [요구별 보고서](verification/enterprise/REPORT.md)를 함께 본다.
+전체 애플리케이션 검사는 2026-10-28 KST의 실제 로컬 소스 기준이다. 이후 문서 정리/공개와 10월 30일 선택형 미리보기 실행기를 추가했다. 애플리케이션 Java/React 소스와 잠금 파일은 그대로이며 새 실행기는 아래 별도 검증으로 구분한다. [검증 요약](verification/enterprise-validation.json)과 [고정 시나리오](verification/enterprise/SCENARIO.md), [요구별 보고서](verification/enterprise/REPORT.md)를 함께 본다.
 
 ## 최신 검사
 
@@ -50,3 +50,9 @@ DuckDB 1.4.1 분석 recipe는 4개 검사와 실제 CSV/JSON 출력을 확인했
 사용자 직접 블라인드 리허설/시간 측정·사후 설명, 공식 평가 JDK/네트워크/미리보기/반입 허용, 새 기기의 캐시 없는 설치는 남아 있다. 확인한 브라우저 흐름이 모든 UI 조합·Cypress 전체 검증을 뜻하지 않는다.
 
 조직 검증은 한 계정 한 회사·평면 부서·프로젝트·로컬 H2 범위다. SSO/전체 JWT 폐기·임의 조직 트리·다중 회사·운영 DB·부하/장애·외부 시스템 원자성·모델/OCR·전체 시스템 보안 인증은 검증하지 않았다. 관계 검사는 서비스 경계이며 도메인별 DB foreign key는 아니다. 정의/상태 자체 변경에는 별도 데이터 migration이 필요하다.
+
+## 2026-10-30 미리보기 실행기
+
+[preview.sh](../scripts/preview.sh)는 빌드된 JAR를 0.0.0.0과 지정 포트로 foreground 실행한다. 기본 로컬 데모의 루프백 설정은 유지한다. 로컬 임시 서버에서 wildcard 리스너·로그의 실제 포트·/fde HTTP 200·인증 후 catalog를 확인했고 잘못된 포트 입력을 거부했다. 검증 뒤 임시 서버를 종료했다. [실제 결과](verification/preview-validation.json)를 본다.
+
+이 검사는 공식 Cofa 포트 전달/미리보기 연결이나 사용자 화면 버튼 조작의 완료를 의미하지 않는다. [제공 환경 실행 절차](PREVIEW.md)에 따라 현장에서 확인해야 한다. 애플리케이션 코드를 바꾸지 않아 전체 241/191 검사를 반복하지 않았다.
