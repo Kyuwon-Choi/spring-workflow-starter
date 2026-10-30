@@ -19,6 +19,6 @@
 | 제공 환경·허용 도구·제출 | [ASSESSMENT](ASSESSMENT.md) |
 | 단계별 구현 AI 지시문 | [PROMPTS](PROMPTS.md) |
 | 요구·계획·검증·인수인계 기록 | [WORK](templates/WORK.md) |
-| 질문/계획 skill | [skills](../skills/README.md) |
+| 질문·서면 합의·계획 skill 설치/호출 | [skills](../skills/README.md) |
 
 기본 정의는 support/procurement/inventory다. enterprise는 현재 업무 소속이 있는 계정에만 노출된다. 새 업무는 정의/계산/정책을 실제 요구에 맞게 바꾼다. 테스트 전용 정의는 기본 UI에 자동 노출하지 않는다.

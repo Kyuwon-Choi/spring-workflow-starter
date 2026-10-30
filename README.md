@@ -25,7 +25,7 @@ Java 21+, OpenSSL, 의존성 다운로드 네트워크가 필요하다. Maven/No
 ## 과제에 적용
 
 1. 제공 코드·자료와 실제 담당자 답을 읽고 요구/완료 조건을 기록한다. 기존 프로젝트가 있으면 그 구조와 계약을 우선한다.
-2. [질문·계획 절차](docs/WORKFLOW.md)로 기반과 첫 실행 흐름을 정한다. [skill](skills/README.md)과 [WORK 템플릿](docs/templates/WORK.md)을 사용할 수 있다.
+2. [질문·합의·계획 절차](docs/WORKFLOW.md)로 기반과 첫 실행 흐름을 정한다. [skill 설치·호출](skills/README.md)에 따라 `./scripts/install-skills.sh [과제 폴더]`로 두 skill을 준비하고, [WORK 템플릿](docs/templates/WORK.md)에 합의·현재 단계·검증을 기록한다.
 3. `src/main/resources/fde/domains/*.json`에 객체·필드·관계·상태·동작을 정의한다. 계산은 FdeExtension, 조직/조회/출력 권한은 FdePolicy로 확장한다.
 4. 입력→실제 결과를 먼저 연결하고 관련 정상/경계/권한/실패 검사를 수행한다.
 5. 분석·문서·배정·AI 기능이 핵심이면 [문제 유형별 레포 카드](docs/REPO-CATALOG.md)에서 필요한 기반/모듈을 고른다.
