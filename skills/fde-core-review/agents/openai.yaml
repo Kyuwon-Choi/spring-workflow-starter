@@ -1,0 +1,4 @@
+interface:
+  display_name: "FDE 핵심 기능 설명"
+  short_description: "핵심 로직의 조건·선택 이유·검증·한계를 실제 근거로 정리하기"
+  default_prompt: "$fde-core-review 핵심 기능의 결정 대상·필수 조건과 목표·방법 선택 이유·독립 검증·보장하지 못하는 범위를 실제 코드와 실행 근거로 정리해줘."

@@ -26,8 +26,9 @@ for parentDir in "$taskRoot/.agents" "$skillRoot"; do
   fi
 done
 
-# Preflight both destinations before copying either skill.
-for skillName in fde-discovery fde-planning; do
+# Preflight every destination before copying any skill.
+skillNames='fde-discovery fde-planning fde-core-review'
+for skillName in $skillNames; do
   sourceDir=$kitRoot/skills/$skillName
   destinationDir=$skillRoot/$skillName
   if [ ! -f "$sourceDir/SKILL.md" ]; then
@@ -43,7 +44,7 @@ for skillName in fde-discovery fde-planning; do
 done
 
 mkdir -p "$skillRoot"
-for skillName in fde-discovery fde-planning; do
+for skillName in $skillNames; do
   destinationDir=$skillRoot/$skillName
   if [ -d "$destinationDir" ]; then
     echo "Already identical: $destinationDir"
@@ -52,4 +53,4 @@ for skillName in fde-discovery fde-planning; do
     echo "Installed: $destinationDir"
   fi
 done
-echo 'Select fde-discovery / fde-planning in the task Codex. If unavailable, explicitly read the kit SKILL.md files.'
+echo 'Select fde-discovery / fde-planning / fde-core-review in the task Codex. If unavailable, explicitly read the kit SKILL.md files.'

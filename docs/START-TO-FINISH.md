@@ -28,7 +28,7 @@ https://github.com/Kyuwon-Choi/spring-workflow-starter
 
 ## 2. skill 준비와 인터뷰
 
-참고 키트 최상위에서 `./scripts/install-skills.sh /실제/결과물폴더`를 실행하면 결과물의 `.agents/skills`에 두 skill이 복사된다. 모듈형 생성 앱이면 solution의 실제 경로를 명시한다. 실제 인식 여부를 확인하고, 목록에 없으면 재시작에 시간을 쓰기보다 SKILL.md 경로를 직접 읽힌다. [설치 상세](../skills/README.md).
+참고 키트 최상위에서 `./scripts/install-skills.sh /실제/결과물폴더`를 실행하면 결과물의 `.agents/skills`에 질문·계획·핵심 기능 설명의 세 skill이 복사된다. 모듈형 생성 앱이면 solution의 실제 경로를 명시한다. 실제 인식 여부를 확인하고, 목록에 없으면 재시작에 시간을 쓰기보다 SKILL.md 경로를 직접 읽힌다. [설치 상세](../skills/README.md).
 
 ```text
 $fde-discovery
@@ -134,6 +134,8 @@ WORK.md의 필수 요구와 실제 결과를 대조해줘.
 담당자에게 최종 확인할 실제 사례와 남은 한계를 준비해줘.
 실행하지 않은 검사·측정하지 않은 개선율·받지 않은 수용 답을 만들지 마.
 ```
+
+첫 핵심 흐름 뒤나 중요한 로직 변경 뒤, 제출 전에는 [fde-core-review](../skills/fde-core-review/SKILL.md)로 결정 대상·필수 조건/목표·방법 선택 이유·독립 검증·보장 범위를 실제 근거와 연결할 수 있다. 기록은 기존 WORK/설계 문서를 갱신하고 구현을 바꾸지 않는다. 설치/인식이 안 되면 해당 SKILL.md를 직접 읽힌다.
 
 제출물 확정 전에 응시자가 다음을 자기 말로 설명할 수 있는지 확인한다: 핵심 문제와 질문 이유, 선택한 기반, 입력→규칙/계산→저장/출력, 중요한 권한/예외, 실제 검증, 남은 한계. AI 금지 단계가 시작된 뒤에는 AI로 답을 만들지 않는다.
 
