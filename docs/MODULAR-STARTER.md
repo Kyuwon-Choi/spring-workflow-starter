@@ -31,6 +31,8 @@ cd solution
 
 선택 결과와 직접/빌드 의존성은 생성된 `solution-modules.json`, `DEPENDENCIES.md`에 남는다. 프론트 lock 파일도 선택 조합에 맞게 복사한다. 샘플 회원가입/메일/관리/장비/은행 계좌 페이지와 다른 도메인은 가져오지 않는다. 이 모듈들은 기존 전체 참고 앱의 기능을 분리한 것이며 기존 JHipster 계정 API 전체를 유지하는 배포판은 아니다.
 
+Dockerfile이 필요하면 생성 명령에 `--docker`, 기존 생성 앱에는 `--add --docker`를 사용한다. Dockerfile/.dockerignore/container.sh 세 파일만 선택 추가하며 앱의 직접 의존성은 바꾸지 않는다. [컨테이너 실행과 검증 범위](CONTAINER.md)를 따른다. 참고용 CSV 점검·검증 기록 대조·계산 예제·세션 가이드는 [문서 목차](README.md)에서 필요할 때 사용하며 기본 앱에는 복사하지 않는다.
+
 ## 요구사항 확인 뒤 추가
 
 모든 명령은 실제 작업공간에서 실행하는 예다. 참고 원본 경로는 `/tmp/fde-reference-kit`로 가정한다.

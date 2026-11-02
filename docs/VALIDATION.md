@@ -1,5 +1,22 @@
 # 검증 명령과 확인 범위
 
+## 선택형 실행·인계·데이터·검증 보완 · 2026-11-02
+
+- `scripts/tests` 39개 통과: 기존 생성/설치 보호, Docker 선택·추가/유지·이전 상태 호환, helper 인자/중단, CSV 다중 파일/형식/키·참조/미완료, 검증 근거의 누락·0건/skip·해시/현재 버전·실패, 원본 덮어쓰기 방지.
+- `recipes/core-validation` 5개 통과: 손계산 기대값, 기준선의 비최적 사례, 탐색 실패와 작은 모델의 불가능 증명 구분, 관련 제약/입력 경계.
+- CSV 예제의 선언된 계약 통과. 실제 5개 계산 테스트의 실행 로그·코드 해시를 요구 기록에 연결해 검증 기록 대조 CLI 성공 확인. 미실행 양식/구조 요약만 한 실행은 exit 2, Docker CLI가 없을 때 helper는 미실행으로 종료함을 확인.
+- `--docker` 기본 앱은 27개 원본 파일. 별도 생성한 앱을 호스트 Java 21에서 npm/타입/Vite/Maven 빌드하고 0.0.0.0으로 실행해 health·첫 화면·JS 자산 3 HTTP 요청을 확인했다. 기존 다운로드 캐시를 사용했으며 임시 서버는 종료했다.
+- Docker helper 테스트는 가짜 CLI로 명령 연결만 검사했다. **이 Mac에 Docker CLI/daemon이 없어 실제 이미지 빌드·컨테이너 실행·컨테이너 UID/volume 권한은 미검증**이다. 호스트 성공을 Docker 성공으로 해석하지 않는다. [실제 Docker 확인 절차](CONTAINER.md).
+- 세션 인계는 운영 가이드/양식이며 새 멀티 세션 실행 검증이 아니다. CSV PASS는 명시한 데이터 계약, evidence PASS는 제공한 기록의 무결성/누락 대조이며 업무 정답이나 제출 성공을 보장하지 않는다. 그래프 레시피는 추가하지 않았다.
+
+```bash
+python3 -m unittest discover -s scripts/tests -v
+python3 -m unittest discover -s recipes/core-validation -v
+python3 scripts/check-data.py --contract recipes/data-check/contract.json
+```
+
+아래 2026-10-31의 6개 모듈 조합/HTTP 기록은 당시 검증이다. 이번 변경에서 전체 앱 검사를 반복한 것으로 표시하지 않는다.
+
 ## 모듈형 생성 앱 · 2026-10-31
 
 기존 전체 참고 앱의 검사와 별개로 다음을 확인했다. 파일 수는 생성 원본만 세며 node_modules/target/.local-data 등 실행 산출물은 제외한다.

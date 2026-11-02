@@ -41,7 +41,7 @@ workflow는 auth를, csv/enterprise는 workflow와 auth를 포함한다. 선택�
 
 ## 질문부터 제출까지
 
-[시작부터 제출까지](docs/START-TO-FINISH.md) · [질문·합의·계획 skill](skills/README.md) · [WORK 양식](docs/templates/WORK.md).
+[시작부터 제출까지](docs/START-TO-FINISH.md) · [질문·계획·핵심 기능 설명 skill](skills/README.md) · [WORK 양식](docs/templates/WORK.md).
 
 제공 자료와 실제 담당자 답을 요구/완료 조건으로 연결하고, 첫 실제 입력→결과를 만든 뒤 중간 확인·관련 정상/경계/권한/실패 검사를 수행한다. 재사용·직접 구현 범위와 실제 검증·한계를 남긴다.
 
@@ -49,6 +49,11 @@ workflow는 auth를, csv/enterprise는 workflow와 auth를 포함한다. 선택�
 |---|---|
 | 최소 생성·모듈 추가·기존 코드 보호 | [MODULAR-STARTER](docs/MODULAR-STARTER.md) |
 | 직접 준비/자동 설치/선택 의존성 | [DEPENDENCIES](docs/DEPENDENCIES.md) |
+| 선택형 Docker 생성·빌드/실행·미검증 범위 | [CONTAINER](docs/CONTAINER.md) |
+| 역할별 세션·파일 소유·변경/재접속 인계 | [SESSION-COORDINATION](docs/SESSION-COORDINATION.md) |
+| 여러 CSV의 구조·키/참조 계약 점검 | [DATA-CHECK](docs/DATA-CHECK.md) |
+| 필수 요구·실제 검증 기록·현재 버전 대조 | [EVIDENCE](docs/EVIDENCE.md) |
+| 작은 계산 정답·기준선 검증 예제 | [core-validation](recipes/core-validation/README.md) |
 | 전체 사용 문서 | [목차](docs/README.md) |
 | JSON·API·CSV 계약 | [DOMAIN-REFERENCE](docs/DOMAIN-REFERENCE.md) |
 | 추가 요구·기존 데이터·규칙 적용 시점 | [CHANGE-CONTROL](docs/CHANGE-CONTROL.md) |

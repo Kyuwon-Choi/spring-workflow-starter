@@ -93,3 +93,7 @@ WORK.md와 실제 실행 결과를 바탕으로 담당자에게 보낼 문장을
 ```
 
 검토 결과의 동의/칭찬은 실행 증거가 아니다. 발견된 문제는 메인 작업에서 재현·수정·관련 재검증 후 기록한다.
+
+## 8. 역할 분담과 핵심 검증
+
+여러 세션을 사용하기로 한 경우 [역할별 요청과 인계](SESSION-COORDINATION.md)를 따른다. 핵심 기능 설명은 [fde-core-review](../skills/fde-core-review/SKILL.md), 작은 계산 정답은 [core-validation](../recipes/core-validation/README.md), CSV는 [DATA-CHECK](DATA-CHECK.md), 최종 실행 기록은 [EVIDENCE](EVIDENCE.md)를 필요한 범위에서 사용한다. 도구 목록 전체를 설치하거나 검증을 실행한 것처럼 기록하지 않는다.

@@ -72,8 +72,10 @@ def is_linked(target: Path, rel: Path) -> bool:
     return any(target.joinpath(*rel.parts[:index + 1]).is_symlink() for index in range(len(rel.parts)))
 
 
-def render(selected: list[str], domain: dict | None) -> dict[str, bytes]:
+def render(selected: list[str], domain: dict | None, docker: bool = False) -> dict[str, bytes]:
     files = read_files(ROOT / "starter/base")
+    if docker:
+        files.update(read_files(ROOT / "starter/docker"))
     for name in selected:
         for path, data in read_files(ROOT / "modules" / name / "files").items():
             if path in files:
@@ -138,12 +140,16 @@ def render(selected: list[str], domain: dict | None) -> dict[str, bytes]:
     modules = ", ".join(selected) or "없음 (Spring + React 기본 골격)"
     auth_note = "\n로그인: 기본 로컬 확인 계정 admin/admin, user/user. APP_ADMIN_PASSWORD/APP_USER_PASSWORD 또는 app.auth.users 설정으로 변경한다. JWT Bearer·메모리 설정 계정이며 SSO/회원가입 기능은 없다. JWT 서명 키는 .local-data/jwt-secret에 생성해 유지하고 Git에 넣지 않는다. 브라우저 새로고침 후 재로그인한다.\n" if "auth" in selected else ""
     files["README.md"] = ("# 과제 결과물\n\n선택 모듈: " + modules + "\n\n```bash\n./scripts/build.sh\n./scripts/preview.sh 8080\n```\n\nJava 21과 Bash, 최초 의존성 다운로드 네트워크가 필요하다. Maven·Node/npm은 wrapper로 준비한다. 실제 서버 포트와 " + ("/fde" if "workflow" in selected else "/") + "를 미리보기에 입력하고 서버 터미널을 유지한다. /api/health로 서버 상태를 확인한다.\n" + auth_note + "\n실제 과제의 필수 실행/제출 문서에 맞춰 이 문서를 작성한다. 재사용한 기능과 직접 바꾼 코드·검증·한계를 기록한다. 원본 키트·다른 예제·개인 준비 문서는 이 결과물에 포함하지 않았다. 설치 목록은 DEPENDENCIES.md, 선택 기록은 solution-modules.json을 본다.\n").encode()
+    if docker:
+        files["README.md"] += ("\n## Docker 선택 구성\n\nDocker CLI와 실행 중인 daemon, 이미지/의존성 다운로드가 필요하다. 호스트 JDK/Node 없이 Docker 안에서 빌드한다.\n\n```bash\n./scripts/container.sh build\n./scripts/container.sh run 8080\n```\n\n내부 포트는 8080이며 호스트 포트를 바꿀 수 있다. SOLUTION_IMAGE와 SOLUTION_DATA_VOLUME으로 앱별 이미지/데이터 볼륨을 구분한다. 데이터 볼륨은 컨테이너 삭제 후에도 남으므로 임의 삭제하지 않는다. 기존 데이터 볼륨 권한은 UID 10001 쓰기 권한을 확인한다. 기본 실행 계정은 비 root이며 로컬 .local-data/비밀 값은 이미지에 포함하지 않는다. helper의 run은 미리보기 프레임 허용 모드다. 일반 docker run에는 필요한 경우에만 --app.preview=true를 넘긴다. 이 파일이 존재하는 것과 실제 Docker 빌드/실행 검증은 별개다.\n").encode()
     lines = ["# 선택된 설치 의존성", "", "JDK 21과 Bash는 환경에 있어야 한다. Maven 3.9.16 / Node 24.21.0 / npm 12.0.2는 wrapper가 다운로드한다. Python은 생성 도구에만 필요하며 이 앱 실행에는 필요 없다.", "", "## Maven 직접 의존성", "", "버전 생략 항목은 Spring Boot 4.1.1 부모의 dependency management를 따른다.", "", "- org.springframework.boot:spring-boot-starter-web", "- org.springframework.boot:spring-boot-starter-validation"]
     lines += ["- " + coordinate for coordinate in dict.fromkeys(coordinates)]
     lines += ["", "## 프론트 실행 의존성", ""] + [f"- {name}=={version}" for name, version in package["dependencies"].items()]
     lines += ["", "## 빌드 의존성", ""] + [f"- {name}=={version}" for name, version in package["devDependencies"].items()]
     lines += ["", "Vite·TypeScript 등 devDependencies는 화면 빌드에 필요하므로 npm ci --omit=dev로 설치하지 않는다. package-lock.json이 간접 의존성을 고정한다. 이 목록은 선택 모듈을 생성/추가한 시점의 선언이며, 사용자가 의존성을 변경하면 함께 갱신한다.", ""]
     files["DEPENDENCIES.md"] = "\n".join(lines).encode()
+    if docker:
+        files["DEPENDENCIES.md"] += b"\nDocker option: Docker CLI + running daemon; eclipse-temurin:21-jdk-jammy build / eclipse-temurin:21-jre-jammy runtime. Image tags may receive updates.\n"
     return files
 
 
@@ -160,6 +166,7 @@ def main() -> None:
     parser.add_argument("--modules", default="", help="Comma-separated auth,workflow,csv,enterprise,stock-adjustment")
     parser.add_argument("--add", action="store_true", help="Add modules to a generated project without overwriting edited files")
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument("--docker", action="store_true", help="Include optional multi-stage Docker build and local run helper")
     group = parser.add_mutually_exclusive_group()
     group.add_argument("--domain-file", type=Path)
     group.add_argument("--domain", choices=["support", "procurement", "inventory", "enterprise"])
@@ -196,12 +203,17 @@ def main() -> None:
         if any(action.get("extension") == "stock-adjustment" for item in domain.get("types", {}).values() for action in item.get("actions", {}).values()):
             requested.append("stock-adjustment")
     selected = expand(requested)
-    files = render(selected, domain)
+    features = list(previous.get("features", [])) if previous else []
+    if any(feature != "docker" for feature in features):
+        raise ValueError("Unsupported project feature")
+    if args.docker and "docker" not in features:
+        features.append("docker")
+    files = render(selected, domain, docker="docker" in features)
     domain_path = f"src/main/resources/fde/domains/{domain['id']}.json" if domain else None
     if previous and domain_path and domain_path == previous.get("domain_path") and not args.domain and not args.domain_file:
         files[domain_path] = (target / domain_path).read_bytes()  # Preserve task-specific content and formatting.
     managed = {path: digest(data) for path, data in files.items()}
-    state = {"schema_version": 1, "source_repository": "https://github.com/Kyuwon-Choi/spring-workflow-starter", "source_commit": source_commit(), "modules": selected, "domain_path": domain_path, "managed_sha256": managed}
+    state = {"schema_version": 1, "source_repository": "https://github.com/Kyuwon-Choi/spring-workflow-starter", "source_commit": source_commit(), "modules": selected, "features": features, "domain_path": domain_path, "managed_sha256": managed}
     changes = {}
     if previous:
         old_hashes = previous["managed_sha256"]
@@ -220,7 +232,7 @@ def main() -> None:
         # Keep the baseline hashes of unchanged generated files, even if a user edited them.
     else:
         changes = files
-    plan = {"target": str(target), "modules": selected, "domain": domain.get("id") if domain else None, "generated_files": len(files) + 1, "files_to_write": len(changes) + 1, "mode": "add" if args.add else "create"}
+    plan = {"target": str(target), "modules": selected, "features": features, "domain": domain.get("id") if domain else None, "generated_files": len(files) + 1, "files_to_write": len(changes) + 1, "mode": "add" if args.add else "create"}
     if args.dry_run:
         print(json.dumps(plan, ensure_ascii=False, indent=2))
         return

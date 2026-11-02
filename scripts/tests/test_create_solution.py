@@ -38,6 +38,42 @@ class CreateSolutionTest(unittest.TestCase):
         self.assertFalse((self.target / 'src/main/resources/fde').exists())
         self.assertNotIn('jhipster', (self.target / 'pom.xml').read_text())
         self.assertEqual(set(json.loads((self.target / 'package.json').read_text())['dependencies']), {'react', 'react-dom'})
+        self.assertFalse((self.target / 'Dockerfile').exists())
+
+    def test_docker_is_optional_and_can_be_added_without_application_dependencies(self):
+        self.run_generator()
+        main = self.target / 'src/main/webapp/main.tsx'
+        main.write_text(main.read_text() + '\n// actual task customization\n')
+        original = main.read_bytes()
+        package = (self.target / 'package-lock.json').read_bytes()
+        self.run_generator('--add', '--docker')
+        self.assertTrue((self.target / 'Dockerfile').is_file())
+        self.assertTrue((self.target / '.dockerignore').is_file())
+        self.assertTrue((self.target / 'scripts/container.sh').stat().st_mode & 0o111)
+        self.assertEqual(json.loads((self.target / 'solution-modules.json').read_text())['features'], ['docker'])
+        self.assertEqual(main.read_bytes(), original)
+        self.assertEqual((self.target / 'package-lock.json').read_bytes(), package)
+        before = self.snapshot()
+        self.run_generator('--add', '--docker')
+        self.assertEqual(self.snapshot(), before)
+
+    def test_docker_survives_module_add_and_edited_readme_conflicts_are_atomic(self):
+        self.run_generator('--docker')
+        self.run_generator('--add', '--modules', 'auth')
+        self.assertTrue((self.target / 'Dockerfile').is_file())
+        readme = self.target / 'README.md'
+        readme.write_text(readme.read_text() + '\nactual instructions\n')
+        before = self.snapshot()
+        self.run_generator('--add', '--modules', 'workflow', '--domain', 'support', success=False)
+        self.assertEqual(self.snapshot(), before)
+
+    def test_old_state_without_features_can_add_docker(self):
+        self.run_generator()
+        path = self.target/'solution-modules.json'
+        state = json.loads(path.read_text()); state.pop('features')
+        path.write_text(json.dumps(state))
+        self.run_generator('--add', '--docker')
+        self.assertEqual(json.loads(path.read_text())['features'], ['docker'])
 
     def test_workflow_selects_auth_and_only_one_domain_without_csv(self):
         self.run_generator('--modules', 'workflow', '--domain', 'support')

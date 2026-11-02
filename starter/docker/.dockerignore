@@ -1,0 +1,17 @@
+.git
+.agents
+.codex
+node_modules
+target
+**/node_modules
+**/target
+.local-data
+**/.local-data
+.env
+.env.*
+**/.env
+**/.env.*
+*.log
+evidence
+.DS_Store
+__pycache__

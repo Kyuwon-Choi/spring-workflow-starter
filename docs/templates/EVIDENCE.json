@@ -1,0 +1,6 @@
+{
+  "schema_version": 1,
+  "requirements": [
+    {"id": "R1", "status": "not_run", "sources": {}, "checks": []}
+  ]
+}

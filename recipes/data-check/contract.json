@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "files": {
+    "resources": {
+      "path": "resources.csv",
+      "primary_key": ["resource_id"],
+      "columns": {
+        "resource_id": {"type": "string"},
+        "capacity": {"type": "integer", "minimum": 0, "unit": "count"}
+      }
+    },
+    "requests": {
+      "path": "requests.csv",
+      "primary_key": ["request_id"],
+      "columns": {
+        "request_id": {"type": "string"},
+        "resource_id": {"type": "string"},
+        "amount": {"type": "number", "minimum": 0, "unit": "declared-example-unit"},
+        "requested_at": {"type": "datetime", "timezone": "required"}
+      }
+    }
+  },
+  "foreign_keys": [
+    {"file": "requests", "columns": ["resource_id"], "references": {"file": "resources", "columns": ["resource_id"]}}
+  ]
+}
